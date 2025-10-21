@@ -14,11 +14,11 @@ const controller = new UserController(service);
 
 export const userRoutes = Router();
 
-userRoutes.get('/', controller.list);
-userRoutes.get('/:id', idParam, controller.get);
+userRoutes.get('/', controller.list); // List all users
+userRoutes.get('/:id', idParam, controller.get); // List user by id
 
-userRoutes.put('/:id', [...idParam, upsertUser], controller.update);
+userRoutes.put('/:id', [...idParam, upsertUser], controller.update); // modfify user by id 
 
-userRoutes.post('/', upsertUser, controller.create);
+userRoutes.post('/', upsertUser, controller.create); // add user
 
-userRoutes.delete('/:id', idParam, controller.delete);
+userRoutes.delete('/:id', idParam, controller.delete); // delete user by id

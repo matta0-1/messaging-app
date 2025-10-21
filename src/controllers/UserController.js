@@ -10,7 +10,7 @@ export class UserController {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        return null;
+        return null; // no errors
     }
 
     list = async (req, res, next) => {
@@ -23,7 +23,7 @@ export class UserController {
 
     get = async (req, res, next) => {
         try {
-            if (this._validate(req, res)) {
+            if (this._validate(req, res)) { // if not null --> there are errors
                 return;
             }
             const data = await this.userService.getUserById(req.params.id);

@@ -3,23 +3,14 @@
  */
 
 export class UserDTO {
-    constructor({ id = null, username, firstName, lastName, email }) {
+    constructor({ id = null, username, firstName, lastName, email, createdAt }) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+        this.createdAt = createdAt;
     }
-
-    // constructor({ id = null, username, firstName, lastName, email, password, createdAt}) {
-    //     this.id = id;
-    //     this.username = username;
-    //     this.firstName = firstName;
-    //     this.lastName = lastName;
-    //     this.email = email;
-    //     this.password = password;
-    //     this.createdAt = createdAt;
-    // }
 
     // mapper to convert entity to DTO
     static fromEntity(entity) {

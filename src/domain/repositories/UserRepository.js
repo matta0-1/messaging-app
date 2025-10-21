@@ -48,10 +48,6 @@ export class UserRepository {
         // let rows = await pool.query(sql);
         // rows = rows.rows;
         const { rows } = await pool.query(sql);
-        console.log(`FROM REPOSITORY - RESULTS OF SQL QUERY:`);
-        console.log(rows);
-        console.log("\nSTILL IN REPOSITORY - RESULTS OF MAPPING RESULTS TO User OBJECTS\n");
-        console.log(rows.map(row => new User(row)));
         return rows.map(row => new User(row));
     }
 

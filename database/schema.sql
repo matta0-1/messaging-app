@@ -29,7 +29,7 @@ CREATE INDEX IF NOT EXISTS idx_username
 
 -- Insert sample data in users table
 INSERT INTO public.users (username, first_name, last_name, email, password) VALUES
-('mat', 'matthew', 'tannous', 'matthew@mail.com', 'matpass'),
+('Mat', 'matthew', 'tannous', 'matthew@mail.com', 'matpass'),
 ('Sir', 'john', 'paul', 'john.paul@gmail.com', 'myPASS')
 ON CONFLICT DO NOTHING;
 

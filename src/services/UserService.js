@@ -16,8 +16,6 @@ export class UserService {
     async listUsers() {
         try {
             const users = await this.userRepository.findAll();
-            // console.log(`FROM SERVICES:`);
-            // console.log(users);
             return users.map(user => UserDTO.fromEntity(user)); // CHECK FOR POTENTIAL ERROR (different parameters)
         } catch (error) {
             throw new Error(`Failed to list users: ${error.message}`);
@@ -108,7 +106,7 @@ export class UserService {
      * @param {int} id 
      * @returns int
      */
-    async deleteUserByID(id) {
+    async deleteUserById(id) {
         try {
             if (!id || isNaN(id)) {
                 throw new Error('Invalid User ID');
