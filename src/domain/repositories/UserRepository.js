@@ -23,8 +23,8 @@ export class UserRepository {
 
     /**
      * Updates data of a user
-     * @param {int} id 
-     * @param {User} param1 
+     * @param {int} id
+     * @param {User} param1
      * @returns User if id and param1 arguments are valid, null otherwise
      */
     async update(id, { username, firstName, lastName, email, password }) {
@@ -53,7 +53,7 @@ export class UserRepository {
 
     /**
      * Finds a user using his id
-     * @param {int} id 
+     * @param {int} id
      * @returns User if id is valid, null otherwise
      */
     async findById(id) {
@@ -65,35 +65,12 @@ export class UserRepository {
     }
 
     /**
-     * Finds a user using his username 
-     * @param {string} username 
-     * @returns User if username is valid, null otherwise
-     */
-    async findByUsername(username) {
-        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
-        FROM users WHERE username = $1;`
-
-        const { rows } = await pool.query(sql, [username]);
-        return rows[0] ? new User(rows[0]) : null;
-    }
-
-    /**
      * Deletes a user using his id
-     * @param {int} id 
+     * @param {int} id
      * @returns int
      */
-    async deleteById(id) {
+    async delete(id) {
         const { rowCount } = await pool.query(`DELETE FROM users WHERE id = $1;`, [id]);
-        return rowCount > 0;
-    }
-
-    /**
-     * Deletes a user using his username
-     * @param {string} username 
-     * @returns int
-     */
-    async deleteByUsername(username) {
-        const { rowCount } = await pool.query(`DELETE FROM users WHERE username = $1;`, [username]);
         return rowCount > 0;
     }
 }

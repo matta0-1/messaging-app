@@ -5,6 +5,10 @@
 import { UserDTO } from "../domain/dto/UserDTO.js";
 
 export class UserService {
+    /**
+     * Construct a UserService object
+     * @param {userRepository} userRepository 
+     */
     constructor(userRepository) {
         this.userRepository = userRepository;
     }
@@ -33,26 +37,6 @@ export class UserService {
                 throw new Error('Invalid User ID');
             }
             const user = await this.userRepository.findById(id);
-            if (!user) {
-                return null;
-            }
-            return UserDTO.fromEntity(user);
-        } catch (error) {
-            throw new Error(`Failed to get user: ${error.message}`);
-        }
-    }
-
-    /**
-     * Finds user by username
-     * @param {int} id 
-     * @returns UserDTO
-     */
-    async getUserByUsername(username) {
-        try {
-            if (!username) {
-                throw new Error('Invalid Username');
-            }
-            const user = await this.userRepository.findByUsername(username);
             if (!user) {
                 return null;
             }
@@ -106,28 +90,12 @@ export class UserService {
      * @param {int} id 
      * @returns int
      */
-    async deleteUserById(id) {
+    async deleteUser(id) {
         try {
             if (!id || isNaN(id)) {
                 throw new Error('Invalid User ID');
             }
-            return await this.userRepository.deleteById(id);
-        } catch (error) {
-            throw new Error(`Failed to delete user: ${error.message}`);
-        }
-    }
-
-    /**
-     * Deletes user by username
-     * @param {string} username 
-     * @returns int
-     */
-    async deleteUserByUsername(username) {
-        try {
-            if (!username) {
-                throw new Error('Invalid Username');
-            }
-            return await this.userRepository.deleteByUsername(username);
+            return await this.userRepository.delete(id);
         } catch (error) {
             throw new Error(`Failed to delete user: ${error.message}`);
         }

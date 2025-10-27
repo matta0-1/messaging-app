@@ -72,7 +72,7 @@ export class UserController {
                 return;
             }
 
-            const ok = await this.userService.deleteUserById(req.params.id);
+            const ok = await this.userService.deleteUser(req.params.id);
             if (!ok) {
                 return res.status(404).json('Not found');
             }
