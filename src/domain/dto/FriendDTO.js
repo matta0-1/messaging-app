@@ -6,7 +6,7 @@ export class FriendDTO {
     constructor({ id = null, user1Id, user2Id, dateAdded }) {
         this.id = id;
         this.user1Id = user1Id;
-        this.user1Id = user2Id;
+        this.user2Id = user2Id;
         this.dateAdded = dateAdded;
     }
 

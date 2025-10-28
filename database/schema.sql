@@ -28,13 +28,14 @@ CREATE INDEX IF NOT EXISTS idx_username
 
 -- Insert sample data in users table
 INSERT INTO public.users (username, first_name, last_name, email, password) VALUES
-('Mat', 'matthew', 'tannous', 'matthew@mail.com', 'matpass'),
-('Sir', 'john', 'paul', 'john.paul@gmail.com', 'myPASS')
+('Mat', 'Matthew', 'Tannous', 'matthewtannous@mail.com', 'WEbMat226'),
+('Joe', 'john', 'paul', 'john.paul@gmail.com', 'myPASS'),
+('Coder', 'paul', 'tanios', 'paultanios@gmail.com', 'paulPassVeryGood123')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.users (username, first_name, last_name, email, password, created_at) VALUES
-('helloWorld', 'elias', 'saile', 'lais@mail.mail', '123456789', '2024-10-19'),
-('GOD', 'no', 'no', 'noo', 'yesss', '2025-4-13') 
+('WEB_DEV', 'elias', 'saile', 'lais@mail.mail', '123456789password', '2024-10-19'),
+('GOD', 'Mike', 'Tanios', 'Mike.tanios@gmail.com', 'Mike13Tan!!', '2025-4-13') 
 ON CONFLICT DO NOTHING;
 
 

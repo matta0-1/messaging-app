@@ -15,7 +15,7 @@ export class UserService {
 
     /**
      * Lists all users
-     * @returns List<Users>
+     * @returns List<User>
      */
     async listUsers() {
         try {
@@ -29,7 +29,7 @@ export class UserService {
     /**
      * Finds user by id
      * @param {int} id 
-     * @returns UserDTO
+     * @returns UserDTO if successful, null otherwise
      */
     async getUserById(id) {
         try {
@@ -49,7 +49,7 @@ export class UserService {
     /**
      * Creates user
      * @param {User} data 
-     * @returns User
+     * @returns UserDTO
      */
     async createUser(data) {
         try {
@@ -68,7 +68,7 @@ export class UserService {
      * Updates data of a user
      * @param {int} id 
      * @param {User} data 
-     * @returns 
+     * @returns UserDTO if successful, null otherwise
      */
     async updateUser(id, data) {
         try {
@@ -98,6 +98,15 @@ export class UserService {
             return await this.userRepository.delete(id);
         } catch (error) {
             throw new Error(`Failed to delete user: ${error.message}`);
+        }
+    }
+
+    async listFriends(id) {
+        try {
+            const users = await this.userRepository.findFriendsOf(id);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list friends of user with id ${id}`);
         }
     }
 }

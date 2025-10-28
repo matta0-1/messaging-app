@@ -17,6 +17,8 @@ export const userRoutes = Router();
 userRoutes.get('/', controller.list); // List all users
 userRoutes.get('/:id', idParam, controller.get); // List user by id
 
+userRoutes.get('/:id/friends', idParam, controller.getFriends); // List friends of user
+
 userRoutes.put('/:id', [...idParam, upsertUser], controller.update); // modfify user by id 
 
 userRoutes.post('/', upsertUser, controller.create); // add user

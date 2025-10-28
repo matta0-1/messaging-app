@@ -6,6 +6,7 @@ import { healthCheck } from './config/db.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 import { userRoutes } from './routes/userRoutes.js';
+import { friendRoutes } from './routes/FriendRoutes.js'
 
 dotenv.config();
 
@@ -23,5 +24,6 @@ app.get('/health', async (req, res) => {
 })
 
 app.use('/api/users', userRoutes);
+app.use('/api/friends', friendRoutes);
 
 app.use(errorHandler);

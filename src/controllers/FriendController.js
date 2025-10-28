@@ -1,8 +1,8 @@
 import { validationResult } from "express-validator";
 
-export class UserController {
-    constructor(userService) {
-        this.userService = userService;
+export class FriendController {
+    constructor(friendService) {
+        this.friendService = friendService;
     }
 
     _validate(req, res) {
@@ -10,12 +10,12 @@ export class UserController {
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        return null; // no errors
+        return null;
     }
 
     list = async (req, res, next) => {
         try {
-            res.json(await this.userService.listUsers());
+            res.json(await this.friendService.listFriends());
         } catch (e) {
             next(e);
         }
@@ -23,12 +23,12 @@ export class UserController {
 
     get = async (req, res, next) => {
         try {
-            if (this._validate(req, res)) { // if not null --> there are errors
+            if (this._validate(req, res)) {
                 return;
             }
-            const data = await this.userService.getUserById(req.params.id);
-            if (!data) { // data = null , no user found
-                return res.status(404).json({ message: 'Not found' });
+            const data = await this.friendService.getFriendById(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: 'Not found' })
             }
             res.status(200).json(data);
         } catch (e) {
@@ -41,8 +41,7 @@ export class UserController {
             if (this._validate(req, res)) {
                 return;
             }
-
-            const data = await this.userService.createUser(req.body);
+            const data = await this.friendService.createFriend(req.body);
             res.status(201).json(data);
         } catch (e) {
             next(e);
@@ -54,12 +53,10 @@ export class UserController {
             if (this._validate(req, res)) {
                 return;
             }
-
-            const data = await this.userService.updateUser(req.params.id, req.body);
+            const data = await this.friendService.updateFriend(req.params.id, req.body);
             if (!data) {
                 return res.status(404).json({ message: 'No data found' });
             }
-
             res.status(201).json(data);
         } catch (e) {
             next(e);
@@ -71,8 +68,7 @@ export class UserController {
             if (this._validate(req, res)) {
                 return;
             }
-
-            const ok = await this.userService.deleteUser(req.params.id);
+            const ok = await this.friendService.deleteFriend(req.params.id);
             if (!ok) {
                 return res.status(404).json('Not found');
             }
@@ -83,14 +79,14 @@ export class UserController {
         }
     }
 
-    getFriends = async (req, res, next) => {
+    getAllWithDetails = async (req, res, next) => {
         try {
             if (this._validate(req, res)) {
                 return;
             }
-            const data = await this.userService.listFriends(req.params.id);
+            const data = await this.friendService.listFriendsWithDetails();
             if (!data) {
-                return res.status(404).json({ message: `User ${req.params.id} has no friends` });
+                return res.status(404).json({ message: 'Not Found' });
             }
             res.status(200).json(data);
         } catch (error) {

@@ -36,8 +36,9 @@ export class FriendRepository {
     /**
      * Updates data of a friend row
      * NOTE: user1Id must be smaller than user2Id to respect database rules
-     * @param {int} id 
-     * @param {Friend} param1 
+     * 
+     * @param {int} id
+     * @param {Friend} param1
      * @returns Friend if id and param1 arguments are valid, null otherwise
      */
     async update(id, { user1Id, user2Id }) {
@@ -49,7 +50,7 @@ export class FriendRepository {
         }
 
         const sql = `UPDATE friends SET user1_id = $1, user2_id = $2
-        WHERE id = &3
+        WHERE id = $3
         RETURNING id, user1_id, user2_id, date_added;`;
 
         const { rows } = await pool.query(sql, [user1Id, user2Id, id]);
@@ -69,33 +70,6 @@ export class FriendRepository {
         return rows.map(row => new Friend(row));
     }
 
-    /**
-     * Lists all friends with details about each user
-     * @returns List<FriendWithDetailsDTO>
-     */
-    async findAllWithDetails() {
-        // replace each id in friends table with information about the user it refers to
-        const sql = `SELECT f.id, f.date_added,
-
-            u1.id AS user1_id, u1.username AS user1_username,
-            u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
-            u1.email AS user1_email, u1.password AS user1_password,
-            u1.created_at AS user1_created_at,
-
-            u2.id AS user2_id, u2.username AS user2_username,
-            u2.first_name AS user2_first_name, u2.last_name AS user2_last_name,
-            u2.email AS user2_email, u2.password AS user2_password,
-            u2.created_at AS user2_created_at
-
-            FROM friends AS f
-                INNER JOIN users AS u1 ON u1.id = f.user1_id
-                INNER JOIN users AS u2 ON u2.id = f.user2_id
-            ORDER BY id ASC;`;
-
-        const { rows } = await pool.query(sql);
-
-        return rows.map(row => new FriendWithDetailsDTO(row));
-    }
 
     /**
      * Finds a friend row using id
@@ -111,34 +85,45 @@ export class FriendRepository {
         return rows[0] ? new Friend(rows[0]) : null;
     }
 
-    /**
-     * Lists all friends of the user with the given id
-     * @param {int} userId 
-     * @returns List<User> if successful, null otherwise
-     */
-    async findFriendsOf(userId) {
-        const sql = `SELECT id, username, first_name, last_name, email,
-            password, created_at FROM users WHERE id IN
-                (SELECT user1_id AS user_id FROM friends WHERE user2_id = $1
-                UNION
-                SELECT user2_id AS user_id FROM friends WHERE user1_id = $1)
-            ORDER BY id ASC;`;
 
-        const { rows } = await pool.query(sql, [userId]);
-
-        // Return users if available, null otherwise
-        return rows[0] ? rows.map(row => new User(row)) : null;
-    }
 
     /**
      * Deletes a friend row using id
      * @param {int} id
      * @returns int
-     */
-    async deleteById(id) {
+    */
+    async delete(id) {
         const sql = `DELETE FROM friends WHERE id = $1;`;
 
         const { rowCount } = await pool.query(sql, [id]);
         return rowCount > 0;
+    }
+
+    /**
+     * Lists all friends with details about each user
+     * @returns List<FriendWithDetailsDTO>
+     */
+    async findAllWithDetails() {
+        // replace each id in friends table with information about the user it refers to
+        const sql = `SELECT f.id, f.date_added,
+    
+            u1.id AS user1_id, u1.username AS user1_username,
+            u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
+            u1.email AS user1_email, u1.password AS user1_password,
+            u1.created_at AS user1_created_at,
+    
+            u2.id AS user2_id, u2.username AS user2_username,
+            u2.first_name AS user2_first_name, u2.last_name AS user2_last_name,
+            u2.email AS user2_email, u2.password AS user2_password,
+            u2.created_at AS user2_created_at
+    
+            FROM friends AS f
+                INNER JOIN users AS u1 ON u1.id = f.user1_id
+                INNER JOIN users AS u2 ON u2.id = f.user2_id
+            ORDER BY id ASC;`;
+
+        const { rows } = await pool.query(sql);
+
+        return rows.map(row => new FriendWithDetailsDTO(row)); // Return DTO ????????????
     }
 }
