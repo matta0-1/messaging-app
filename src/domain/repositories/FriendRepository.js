@@ -20,7 +20,7 @@ export class FriendRepository {
     async create({ user1Id, user2Id }) {
         // Ensure user1Id < user2Id
         if (user1Id > user2Id) {
-            temp = user1Id;
+            let temp = user1Id;
             user1Id = user2Id;
             user2Id = temp;
         }
@@ -44,7 +44,7 @@ export class FriendRepository {
     async update(id, { user1Id, user2Id }) {
         // Ensure user1Id < user2Id
         if (user1Id > user2Id) {
-            temp = user1Id;
+            let temp = user1Id;
             user1Id = user2Id;
             user2Id = temp;
         }
@@ -70,7 +70,6 @@ export class FriendRepository {
         return rows.map(row => new Friend(row));
     }
 
-
     /**
      * Finds a friend row using id
      * @param {int} id
@@ -84,8 +83,6 @@ export class FriendRepository {
 
         return rows[0] ? new Friend(rows[0]) : null;
     }
-
-
 
     /**
      * Deletes a friend row using id

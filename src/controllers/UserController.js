@@ -90,7 +90,7 @@ export class UserController {
             }
             const data = await this.userService.listFriends(req.params.id);
             if (!data) {
-                return res.status(404).json({ message: `User ${req.params.id} has no friends` });
+                return res.status(404).json({ message: `User ${req.params.id} has no friends or does not exist` });
             }
             res.status(200).json(data);
         } catch (error) {
