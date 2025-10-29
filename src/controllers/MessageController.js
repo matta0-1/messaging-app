@@ -18,7 +18,9 @@ export class MessageController {
             if (this._validate(req, res)) {
                 return;
             }
-            const data = this.messageService.createMessage(req.body);
+
+            const data = await this.messageService.createMessage(req.body);
+            console.log(data)
             res.status(201).json(data);
         } catch (error) {
             next(error);
@@ -35,7 +37,7 @@ export class MessageController {
                 return res.status(404).json({ message: 'Not found' });
             }
 
-            res.status(204).send();
+            res.status(201).json(data);
         } catch (error) {
             next(error);
         }
@@ -71,7 +73,7 @@ export class MessageController {
             }
             const ok = await this.messageService.deleteMessage(req.params.id);
             if (!ok) {
-                return res.status(404)({ message: 'Not found' });
+                return res.status(404).json({ message: 'Not found' });
             }
             res.status(204).send();
         } catch (error) {

@@ -12,7 +12,6 @@ export class MessageService {
             }
             const message = await this.messageRepository.create(data);
             return MessageDTO.fromEntity(message);
-
         } catch (error) {
             throw new Error(`Failed to create message: ${error.message}`);
         }
@@ -57,7 +56,7 @@ export class MessageService {
 
     async deleteMessage(id) {
         try {
-            if (!id || NaN(id)) {
+            if (!id || isNaN(id)) {
                 throw new Error(`Invalid message id`);
             }
             return await this.messageRepository.delete(id);

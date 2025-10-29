@@ -20,7 +20,7 @@ export const messageRoutes = Router();
 messageRoutes.get('/', controller.list);
 messageRoutes.get('/:id', idParam, controller.get);
 
-messageRoutes.put('/:id', [idParam, upsertMessage],  controller.update);
+messageRoutes.put('/:id', [...idParam, upsertMessage],  controller.update);
 
 messageRoutes.post('/', upsertMessage, controller.create);
 
