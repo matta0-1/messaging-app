@@ -57,7 +57,7 @@ export class UserService {
                 || !data.email || !data.password) {
                 throw new Error('Missing required fields: username, first name, last name, email address, password');
             }
-            const user = this.userRepository.create(data);
+            const user = await this.userRepository.create(data);
             return UserDTO.fromEntity(user);
         } catch (error) {
             throw new Error(`Failed to create user: ${error.message}`);
@@ -78,7 +78,7 @@ export class UserService {
             if (!data || Object.keys(data).length === 0) {
                 throw new Error('No data provided for update');
             }
-            const user = this.userRepository.update(id, data);
+            const user = await this.userRepository.update(id, data);
             return user ? UserDTO.fromEntity(user) : null;
         } catch (error) {
             throw new Error(`Failed to update user: ${error.message}`);

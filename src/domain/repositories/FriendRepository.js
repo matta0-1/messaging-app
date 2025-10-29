@@ -7,7 +7,6 @@
 import { pool } from "../../config/db.js"
 import { Friend } from "../entities/Friend.js"
 import { FriendWithDetailsDTO } from "../dto/FriendWithDetailsDTO.js"
-import { User } from "../entities/User.js"
 
 export class FriendRepository {
 
