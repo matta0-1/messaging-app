@@ -16,14 +16,12 @@ const controller = new FriendController(service);
 
 export const friendRoutes = Router();
 
-friendRoutes.get('/', controller.list);
+friendRoutes.get('/', controller.list); // List all friends
+friendRoutes.get('/details', controller.getAllWithDetails); // List all friends with details
+friendRoutes.get('/:id', idParam, controller.get); // List friend row by id
 
-friendRoutes.get('/details', controller.getAllWithDetails);
+friendRoutes.put('/:id', [...idParam, upsertFriend], controller.update); // modify friend row by id
 
-friendRoutes.get('/:id', idParam, controller.get);
+friendRoutes.post('/', upsertFriend, controller.create); // add friend
 
-friendRoutes.put('/:id', [...idParam, upsertFriend], controller.update);
-
-friendRoutes.post('/', upsertFriend, controller.create);
-
-friendRoutes.delete('/:id', idParam, controller.delete);
+friendRoutes.delete('/:id', idParam, controller.delete); // delete friend by id

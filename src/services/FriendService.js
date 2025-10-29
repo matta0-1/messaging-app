@@ -1,11 +1,8 @@
 /**
- * ADDD OTHERSS
  * The FriendService class contains methods to perform friend-related actions
  */
 
 import { FriendDTO } from "../domain/dto/FriendDTO.js";
-import { FriendWithDetailsDTO } from "../domain/dto/FriendWithDetailsDTO.js";
-import { UserDTO } from "../domain/dto/UserDTO.js"; // to list friends of a user
 
 export class FriendService {
     /**
@@ -40,10 +37,10 @@ export class FriendService {
                 throw new Error('Invalid Friend ID');
             }
             const friend = await this.friendRepository.findById(id);
-            if (!friend) {
-                return null;
-            }
-            return FriendDTO.fromEntity(friend);
+            // if (!friend) {
+            //     return null;
+            // }
+            return friend ? FriendDTO.fromEntity(friend) : null;
         } catch (error) {
             throw new Error(`Failed to get friend: ${error.message}`);
         }
@@ -107,6 +104,10 @@ export class FriendService {
         }
     }
 
+    /**
+     * Lists all friends with details of each user
+     * @returns List<FriendWithDetailsDTO>
+     */
     async listFriendsWithDetails() {
         try {
             const friendsWithDetails = await this.friendRepository.findAllWithDetails();

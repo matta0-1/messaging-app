@@ -34,13 +34,13 @@ export class UserService {
     async getUserById(id) {
         try {
             if (!id || isNaN(id)) {
-                throw new Error('Invalid User ID');
+                throw new Error('Invalid User id');
             }
             const user = await this.userRepository.findById(id);
-            if (!user) {
-                return null;
-            }
-            return UserDTO.fromEntity(user);
+            // if (!user) {
+            //     return null;
+            // }
+            return user ? UserDTO.fromEntity(user) : null;
         } catch (error) {
             throw new Error(`Failed to get user: ${error.message}`);
         }
@@ -73,7 +73,7 @@ export class UserService {
     async updateUser(id, data) {
         try {
             if (!id || isNaN(id)) {
-                throw new Error('Invalid User ID');
+                throw new Error('Invalid User id');
             }
             if (!data || Object.keys(data).length === 0) {
                 throw new Error('No data provided for update');
@@ -93,7 +93,7 @@ export class UserService {
     async deleteUser(id) {
         try {
             if (!id || isNaN(id)) {
-                throw new Error('Invalid User ID');
+                throw new Error('Invalid User id');
             }
             return await this.userRepository.delete(id);
         } catch (error) {
@@ -101,6 +101,11 @@ export class UserService {
         }
     }
 
+    /**
+     * Lists all friends of a user
+     * @param {int} id
+     * @returns List<UserDTO>
+     */
     async listFriends(id) {
         try {
             const users = await this.userRepository.findFriendsOf(id);

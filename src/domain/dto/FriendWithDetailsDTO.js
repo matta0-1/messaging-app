@@ -1,3 +1,8 @@
+/**
+ * DTO for detailed information about two friends.
+ * Contains data of friends table and data about the two users referenced
+ * by user1_id and user2_id
+ */
 export class FriendWithDetailsDTO {
     constructor({ id, date_added,
         user1_id, user1_username, user1_first_name, user1_last_name,
