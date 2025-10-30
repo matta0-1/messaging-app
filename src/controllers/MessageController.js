@@ -80,4 +80,35 @@ export class MessageController {
             next(error);
         }
     }
+
+    editContent = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+
+            const data = await this.messageService.editMessage(req.params.id, req.body);
+            if (!data) {
+                return res.status(404).json({ message: "Not found" });
+            }
+            res.status(201).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    getConversation = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.messageService.listConversation(req.params.id, req.body);
+            if (!data) {
+                return res.status(404).json({ message: `No conversation between users ${req.params.id} and ${req.body.user2Id}`});
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

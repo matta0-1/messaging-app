@@ -46,8 +46,6 @@ export class MessageRepository {
         return rowCount > 0;
     }
 
-/////////////////////////////////////////////////////////////////////////////////
-
     async editContent(id, { content }) {
         const sql = `UPDATE messages SET content = $1, edited_at = NOW() 
         WHERE id = $2
@@ -55,5 +53,16 @@ export class MessageRepository {
 
         const { rows } = await pool.query(sql, [content, id]);
         return rows[0] ? new Message(rows[0]) : null;
+    }
+
+    async findConversation(user1Id, { user2Id }) {
+        const sql = `SELECT id, content, sender_id, receiver_id, sent_at, edited_at
+        FROM messages 
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1)
+        ORDER BY sent_at DESC;`;
+
+        const { rows } = await pool.query(sql, [user1Id, user2Id]);
+        return rows ? rows.map(row => new Message(row)) : null;
     }
 }

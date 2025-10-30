@@ -9,3 +9,11 @@ export const upsertMessage = [
     body('senderId').isInt({ gt: 0 }).withMessage('id of sender must be a positive integer'),
     body('receiverId').isInt({ gt: 0 }).withMessage('id of receiver must be a positive integer'),
 ];
+
+export const upsertUserId = [
+    body('user2Id').isInt({ gt: 0 }).withMessage('id of other user must be a positive integer'),
+];
+
+export const upsertMessageContent = [
+    body('content').isString().isLength({ max: 1000 }).withMessage('Message content is too large, must be less than 1000 characters'),
+]

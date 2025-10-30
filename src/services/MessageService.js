@@ -65,4 +65,36 @@ export class MessageService {
         }
     }
 
+    async editMessage(id, data) {
+        try {
+            if (!id || isNaN(id)) {
+                throw new Error(`Invalid message id`);
+            }
+            if (!data) {
+                throw new Error(`Content for edited message not provided`);
+            }
+            if (!data.content) {
+                throw new Error(`Content for edited message cannot be empty. Delete the message to remove contents`);
+            }
+
+            const message = await this.messageRepository.editContent(id, data);
+            return message ? MessageDTO.fromEntity(message) : null;
+        } catch (error) {
+            throw new Error(`Failed to edit message: ${error.message}`);
+        }
+    }
+
+    async listConversation(user1Id, data) {
+        try {
+            if (!user1Id || isNaN(user1Id) || !data || !data.user2Id) {
+                throw new Error(`Invalid id for sender or receiver`);
+            }
+
+            const messages = await this.messageRepository.findConversation(user1Id, data);
+
+            return messages[0] ? messages.map(message => MessageDTO.fromEntity(message)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list conversation: ${error.message}`);
+        }
+    }
 }
