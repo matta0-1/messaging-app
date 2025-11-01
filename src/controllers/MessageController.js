@@ -1,6 +1,13 @@
+/**
+ * Controller for Message
+ */
 import { validationResult } from "express-validator";
 
 export class MessageController {
+    /**
+     * Constructs a MessageController object
+     * @param {MessageService} messageService 
+     */
     constructor(messageService) {
         this.messageService = messageService;
     }
@@ -104,7 +111,22 @@ export class MessageController {
             }
             const data = await this.messageService.listConversation(req.params.id, req.body);
             if (!data) {
-                return res.status(404).json({ message: `No conversation between users ${req.params.id} and ${req.body.user2Id}`});
+                return res.status(404).json({ message: `No conversation between users ${req.params.id} and ${req.body.user2Id}` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    getMessagesWithContentInConversation = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.messageService.searchInConversation(req.params.id, req.body);
+            if (!data) {
+                return res.status(404).json({ message: `No messages with ${req.body.content} In conversation between users ${req.params.id} and ${req.body.user2Id}` });
             }
             res.status(200).json(data);
         } catch (error) {

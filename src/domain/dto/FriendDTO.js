@@ -1,5 +1,5 @@
 /**
- * DTO for Friend
+ * Data Transfer Object for Friend
  */
 
 export class FriendDTO {

@@ -1,3 +1,6 @@
+/**
+ * Class used to represent a message
+ */
 export class Message {
     constructor({ id = null, content, sender_id, receiver_id, sent_at = null, edited_at = null }) {
         this.id = id;

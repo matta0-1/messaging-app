@@ -1,6 +1,13 @@
+/**
+ * Controller for User
+ */
 import { validationResult } from "express-validator";
 
 export class UserController {
+    /**
+     * Constructs a UserControlled object
+     * @param {UserService} userService 
+     */
     constructor(userService) {
         this.userService = userService;
     }

@@ -1,10 +1,23 @@
+/**
+ * The MessageService class contains methods to perform user-related actions
+ */
+
 import { MessageDTO } from "../domain/dto/MessageDTO.js";
 
 export class MessageService {
+    /**
+     * Constructs a MessageService object
+     * @param {MessageRepository} messageRepository
+     */
     constructor(messageRepository) {
         this.messageRepository = messageRepository;
     }
 
+    /**
+     * Creates a message
+     * @param {Object} data
+     * @returns MessageDTO
+     */
     async createMessage(data) {
         try {
             if (!data || !data.content || !data.senderId || !data.receiverId) {
@@ -28,6 +41,12 @@ export class MessageService {
         }
     }
 
+    /**
+     * Updates data of a message
+     * @param {int} id
+     * @param {Object} data 
+     * @returns MessageDTO if successful, null otherwise
+     */
     async updateMessage(id, data) {
         try {
             if (!id || isNaN(id)) {
@@ -54,6 +73,10 @@ export class MessageService {
         }
     }
 
+    /**
+     * Lists all messages
+     * @returns List<MessageDTO>
+     */
     async listMessages() {
         try {
             const messages = await this.messageRepository.findAll();
@@ -63,6 +86,11 @@ export class MessageService {
         }
     }
 
+    /**
+     * Finds message by id
+     * @param {int} id 
+     * @returns MessageDTO if successful, null otherwise
+     */
     async getMessageById(id) {
         try {
             if (!id || isNaN(id)) {
@@ -75,6 +103,11 @@ export class MessageService {
         }
     }
 
+    /**
+     * Deletes message by id
+     * @param {int} id 
+     * @returns int
+     */
     async deleteMessage(id) {
         try {
             if (!id || isNaN(id)) {
@@ -86,6 +119,12 @@ export class MessageService {
         }
     }
 
+    /**
+     * Modifies message content
+     * @param {int} id 
+     * @param {Object} data 
+     * @returns MessageDTO if successful, null otherwise
+     */
     async editMessage(id, data) {
         try {
             if (!id || isNaN(id)) {
@@ -105,6 +144,12 @@ export class MessageService {
         }
     }
 
+    /**
+     * Lists all messages between 2 users
+     * @param {int} user1Id 
+     * @param {int} user2Id
+     * @returns List<MessageDTO> if conversation exists, null otherwise
+     */
     async listConversation(user1Id, data) {
         try {
             if (!user1Id || isNaN(user1Id) || !data || !data.user2Id) {
@@ -113,6 +158,28 @@ export class MessageService {
 
             const messages = await this.messageRepository.findConversation(user1Id, data);
 
+            return messages[0] ? messages.map(message => MessageDTO.fromEntity(message)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list conversation: ${error.message}`);
+        }
+    }
+
+    /**
+     * Lists all messages in a conversation between 2 users that contain a specific string
+     * @param {int} user1Id 
+     * @param {Object} data 
+     * @returns List<MessageDTO> if conversation exists and contains content, null otherwise
+     */
+    async searchInConversation(user1Id, data) {
+        try {
+            if (!user1Id || isNaN(user1Id) || !data || !data.user2Id) {
+                throw new Error(`Invalid id for sender or receiver`);
+            }
+            if (!data.content) {
+                throw new Error("Invalid message content");
+            }
+
+            const messages = await this.messageRepository.searchInConversation(user1Id, data);
             return messages[0] ? messages.map(message => MessageDTO.fromEntity(message)) : null;
         } catch (error) {
             throw new Error(`Failed to list conversation: ${error.message}`);

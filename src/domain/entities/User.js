@@ -1,5 +1,5 @@
 /**
- * Class User used to represent a user
+ * Class used to represent a user
  */
 export class User {
     constructor({ id = null, username, first_name, last_name, email, password, created_at = null }) {

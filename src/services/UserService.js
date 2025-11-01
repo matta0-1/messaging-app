@@ -6,8 +6,8 @@ import { UserDTO } from "../domain/dto/UserDTO.js";
 
 export class UserService {
     /**
-     * Construct a UserService object
-     * @param {userRepository} userRepository 
+     * Constructs a UserService object
+     * @param {UserRepository} userRepository 
      */
     constructor(userRepository) {
         this.userRepository = userRepository;
@@ -47,7 +47,7 @@ export class UserService {
     }
 
     /**
-     * Creates user
+     * Creates a user
      * @param {User} data 
      * @returns UserDTO
      */

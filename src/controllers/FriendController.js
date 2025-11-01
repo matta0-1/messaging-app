@@ -1,6 +1,13 @@
+/**
+ * Controller for Friend
+ */
 import { validationResult } from "express-validator";
 
 export class FriendController {
+    /**
+     * Constructs a FriendController object
+     * @param {FriendService} friendService 
+     */
     constructor(friendService) {
         this.friendService = friendService;
     }
@@ -70,7 +77,7 @@ export class FriendController {
             }
             const ok = await this.friendService.deleteFriend(req.params.id);
             if (!ok) {
-                return res.status(404).json({message: 'Not found'});
+                return res.status(404).json({ message: 'Not found' });
             }
 
             res.status(204).send();

@@ -1,5 +1,5 @@
 /**
- * DTO for detailed information about two friends.
+ * Data Transfer Object for detailed information about two friends.
  * Contains data of friends table and data about the two users referenced
  * by user1_id and user2_id
  */

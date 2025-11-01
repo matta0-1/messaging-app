@@ -1,5 +1,5 @@
 /**
- * DTO for Message
+ * Data Transfer Object for Message
  */
 export class MessageDTO {
     constructor({ id = null, content, senderId, receiverId, sentAt = null, editedAt = null }) {
