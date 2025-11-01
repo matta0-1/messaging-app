@@ -60,7 +60,13 @@ export class UserService {
             const user = await this.userRepository.create(data);
             return UserDTO.fromEntity(user);
         } catch (error) {
-            throw new Error(`Failed to create user: ${error.message}`);
+            let message = "";
+            if (error.message == 'duplicate key value violates unique constraint \"users_username_key\"') {
+                message = "This username is already taken. Try another one";
+            } else {
+                message = error.message;
+            }
+            throw new Error(`Failed to create user: ${message}`);
         }
     }
 
@@ -81,7 +87,13 @@ export class UserService {
             const user = await this.userRepository.update(id, data);
             return user ? UserDTO.fromEntity(user) : null;
         } catch (error) {
-            throw new Error(`Failed to update user: ${error.message}`);
+            let message = "";
+            if (error.message == 'duplicate key value violates unique constraint \"users_username_key\"') {
+                message = "This username is already taken. Try another one";
+            } else {
+                message = error.message;
+            }
+            throw new Error(`Failed to update user: ${message}`);
         }
     }
 

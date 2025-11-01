@@ -120,6 +120,6 @@ export class FriendRepository {
 
         const { rows } = await pool.query(sql);
 
-        return rows.map(row => new FriendWithDetailsDTO(row)); // Return DTO ????????????
+        return rows.map(row => new FriendWithDetailsDTO(row));
     }
 }

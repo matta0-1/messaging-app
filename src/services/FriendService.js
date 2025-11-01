@@ -59,7 +59,17 @@ export class FriendService {
             const friend = await this.friendRepository.create(data);
             return FriendDTO.fromEntity(friend);
         } catch (error) {
-            throw new Error(`Failed to create friend: ${error.message}`);
+            let message = "";
+            if (error.message == 'duplicate key value violates unique constraint \"friends_user1_id_user2_id_key\"') {
+                message = `Users ${data.user1Id} and ${data.user2Id} are already friends`;
+            } else if (error.message == 'insert or update on table \"friends\" violates foreign key constraint \"friends_user2_id_fkey\"') {
+                message = "One or both users do not exist";
+            } else if (error.message = 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
+                message = "Cannot add yourself as a friend";
+            } else {
+                message = error.message;
+            }
+            throw new Error(`Failed to create friend: ${message}`);
         }
     }
 
@@ -80,13 +90,20 @@ export class FriendService {
             const friend = await this.friendRepository.update(id, data);
             return friend ? FriendDTO.fromEntity(friend) : null;
         } catch (error) {
-            if (error.message === 'duplicate key value violates unique constraint "friends_user1_id_user2_id_key"') {
-                throw new Error(`Failed to update friend: Users ${data.user1Id} and ${data.user2Id} are already friends`)
+            let message = "";
+            if (error.message == 'duplicate key value violates unique constraint \"friends_user1_id_user2_id_key\"') {
+                message = `Users ${data.user1Id} and ${data.user2Id} are already friends`;
+            } else if (error.message == 'insert or update on table \"friends\" violates foreign key constraint \"friends_user2_id_fkey\"') {
+                message = "One or both users do not exist";
+            } else if (error.message = 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
+                message = "Cannot add yourself as a friend";
             } else {
-                throw new Error(`Failed to update friend: ${error.message}`);
+                message = error.message;
             }
+            throw new Error(`Failed to update friend: ${message}`);
         }
     }
+
 
     /**
      * Deletes friend by id

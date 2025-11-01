@@ -13,7 +13,18 @@ export class MessageService {
             const message = await this.messageRepository.create(data);
             return MessageDTO.fromEntity(message);
         } catch (error) {
-            throw new Error(`Failed to create message: ${error.message}`);
+            let message = "";
+            if (error.message == 'insert or update on table "messages" violates foreign key constraint "receiver"') {
+                message = `User ${data.receiverId} does not exist`;
+            } else if (error.message == 'insert or update on table "messages" violates foreign key constraint "sender"') {
+                message = `User ${data.senderId} does not exist`;
+            } else if (error.message = 'new row for relation \"messages\" violates check constraint \"messages_check\"') {
+                message = "Cannot send a message to self";
+            } else {
+                message = error.message;
+            }
+
+            throw new Error(`Failed to create message: ${message}`);
         }
     }
 
@@ -29,7 +40,17 @@ export class MessageService {
             const message = await this.messageRepository.update(id, data);
             return message ? MessageDTO.fromEntity(message) : null;
         } catch (error) {
-            throw new Error(`Failed to update message: ${error.message}`);
+            let message = "";
+            if (error.message == 'insert or update on table "messages" violates foreign key constraint "receiver"') {
+                message = `User ${data.receiverId} does not exist`;
+            } else if (error.message == 'insert or update on table "messages" violates foreign key constraint "sender"') {
+                message = `User ${data.senderId} does not exist`;
+            } else if (error.message = 'new row for relation \"messages\" violates check constraint \"messages_check\"') {
+                message = "Cannot send a message to self";
+            } else {
+                message = error.message;
+            }
+            throw new Error(`Failed to update message: ${message}`);
         }
     }
 
