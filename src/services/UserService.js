@@ -134,16 +134,30 @@ export class UserService {
     }
 
     /**
-     * Lists all friends of a user
+     * Lists all friends of a user using id
      * @param {int} id
      * @returns List<UserDTO>
      */
-    async listFriends(id) {
+    async listFriendsById(id) {
         try {
-            const users = await this.userRepository.findFriendsOf(id);
+            const users = await this.userRepository.findFriendsById(id);
             return users ? users.map(user => UserDTO.fromEntity(user)) : null;
         } catch (error) {
             throw new Error(`Failed to list friends of user with id ${id}`);
+        }
+    }
+
+    /**
+     * Lists all friends of a user using username
+     * @param {string} username
+     * @returns List<UserDTO>
+     */
+    async listFriendsByUsername(username) {
+        try {
+            const users = await this.userRepository.findFriendsByUsername(username);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list friends of user with username ${username}`);
         }
     }
 }

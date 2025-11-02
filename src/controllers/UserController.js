@@ -105,14 +105,29 @@ export class UserController {
         }
     }
 
-    getFriends = async (req, res, next) => {
+    getFriendsById = async (req, res, next) => {
         try {
             if (this._validate(req, res)) {
                 return;
             }
-            const data = await this.userService.listFriends(req.params.id);
+            const data = await this.userService.listFriendsById(req.params.id);
             if (!data) {
                 return res.status(404).json({ message: `User ${req.params.id} has no friends or does not exist` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    getFriendsByUsername = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.listFriendsByUsername(req.params.username);
+            if (!data) {
+                return res.status(404).json({ message: `User ${req.params.username} has no friends or does not exist` });
             }
             res.status(200).json(data);
         } catch (error) {
