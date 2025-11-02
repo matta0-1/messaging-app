@@ -122,4 +122,19 @@ export class FriendRepository {
 
         return rows.map(row => new FriendWithDetailsDTO(row));
     }
+
+    async areFriends(user1Id, user2Id) {
+        // Ensure user1Id < user2Id
+        if (user1Id > user2Id) {
+            let temp = user1Id;
+            user1Id = user2Id;
+            user2Id = temp;
+        }
+
+        const sql = `SELECT id, user1_id, user2_id, date_added
+        FROM friends WHERE user1_id = $1 AND user2_id = $2;`;
+
+        const { rowCount } = await pool.query(sql, [user1Id, user2Id]);
+        return rowCount > 0;
+    }
 }

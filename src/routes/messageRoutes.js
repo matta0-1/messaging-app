@@ -4,6 +4,8 @@ import { MessageRepository } from "../domain/repositories/MessageRepository.js";
 import { MessageService } from "../services/MessageService.js";
 import { MessageController } from "../controllers/MessageController.js";
 
+import { FriendRepository } from "../domain/repositories/FriendRepository.js";
+
 import { idParam, upsertMessage, upsertMessageContent, upsertUserId } from "../validators/MessageValidators.js";
 
 /**
@@ -11,7 +13,7 @@ import { idParam, upsertMessage, upsertMessageContent, upsertUserId } from "../v
  */
 
 const repo = new MessageRepository();
-const service = new MessageService(repo);
+const service = new MessageService(repo, new FriendRepository());
 const controller = new MessageController(service);
 
 export const messageRoutes = Router();

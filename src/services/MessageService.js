@@ -9,8 +9,9 @@ export class MessageService {
      * Constructs a MessageService object
      * @param {MessageRepository} messageRepository
      */
-    constructor(messageRepository) {
+    constructor(messageRepository, friendRepository) {
         this.messageRepository = messageRepository;
+        this.friendRepository = friendRepository;
     }
 
     /**
@@ -23,21 +24,16 @@ export class MessageService {
             if (!data || !data.content || !data.senderId || !data.receiverId) {
                 throw new Error(`Missing required fields: content, sender id, receiver id`);
             }
+            if (data.senderId === data.receiverId) {
+                throw new Error('Cannot send message to self')
+            }
+            if (!await this.friendRepository.areFriends(data.senderId, data.receiverId)) {
+                throw new Error(`Users ${data.senderId} and ${data.receiverId} are not friends`);
+            }
             const message = await this.messageRepository.create(data);
             return MessageDTO.fromEntity(message);
         } catch (error) {
-            let message = "";
-            if (error.message == 'insert or update on table "messages" violates foreign key constraint "receiver"') {
-                message = `User ${data.receiverId} does not exist`;
-            } else if (error.message == 'insert or update on table "messages" violates foreign key constraint "sender"') {
-                message = `User ${data.senderId} does not exist`;
-            } else if (error.message = 'new row for relation \"messages\" violates check constraint \"messages_check\"') {
-                message = "Cannot send a message to self";
-            } else {
-                message = error.message;
-            }
-
-            throw new Error(`Failed to create message: ${message}`);
+            throw new Error(`Failed to create message: ${error.message}`);
         }
     }
 
@@ -56,20 +52,16 @@ export class MessageService {
                 throw new Error(`No data provided for update`);
             }
 
+            if (data.senderId === data.receiverId) {
+                throw new Error('Cannot send message to self')
+            }
+            if (!await this.friendRepository.areFriends(data.senderId, data.receiverId)) {
+                throw new Error(`Users ${data.senderId} and ${data.receiverId} are not friends`);
+            }
             const message = await this.messageRepository.update(id, data);
             return message ? MessageDTO.fromEntity(message) : null;
         } catch (error) {
-            let message = "";
-            if (error.message == 'insert or update on table "messages" violates foreign key constraint "receiver"') {
-                message = `User ${data.receiverId} does not exist`;
-            } else if (error.message == 'insert or update on table "messages" violates foreign key constraint "sender"') {
-                message = `User ${data.senderId} does not exist`;
-            } else if (error.message = 'new row for relation \"messages\" violates check constraint \"messages_check\"') {
-                message = "Cannot send a message to self";
-            } else {
-                message = error.message;
-            }
-            throw new Error(`Failed to update message: ${message}`);
+            throw new Error(`Failed to update message: ${error.message}`);
         }
     }
 
