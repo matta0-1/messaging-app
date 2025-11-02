@@ -28,14 +28,14 @@ CREATE INDEX IF NOT EXISTS idx_username
 
 -- Insert sample data in users table
 INSERT INTO public.users (username, first_name, last_name, email, password) VALUES
-('Mat', 'Matthew', 'Tannous', 'matthewtannous@mail.com', 'WEbMat226'),
-('Joe', 'john', 'paul', 'john.paul@gmail.com', 'myPASS'),
-('Coder', 'paul', 'tanios', 'paultanios@gmail.com', 'paulPassVeryGood123')
+('mat', 'Matthew', 'Tannous', 'matthewtannous@mail.com', 'WEbMat226'),
+('joe', 'john', 'paul', 'john.paul@gmail.com', 'myPASS'),
+('coder', 'paul', 'tanios', 'paultanios@gmail.com', 'paulPassVeryGood123')
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.users (username, first_name, last_name, email, password, created_at) VALUES
-('WEB_DEV', 'elias', 'saile', 'lais@mail.mail', '123456789password', '2024-10-19'),
-('GOD', 'Mike', 'Tanios', 'Mike.tanios@gmail.com', 'Mike13Tan!!', '2025-4-13') 
+('web_dev', 'elias', 'saile', 'lais@mail.mail', '123456789password', '2024-10-19'),
+('god', 'Mike', 'Tanios', 'Mike.tanios@gmail.com', 'Mike13Tan!!', '2025-4-13') 
 ON CONFLICT DO NOTHING;
 
 
@@ -111,12 +111,15 @@ CREATE INDEX idx_sender_receiver
 
 -- Insert sample data in messages table
 INSERT INTO public.messages (content, sender_id, receiver_id, sent_at, edited_at) VALUES
-('hello', 2, 1, '2025-10-29 14:03:52.783405+02', '2025-10-29 14:03:52.783405+02'),
-('hiii',  1, 2, '2025-10-29 14:03:55.783405+02', '2025-10-29 14:06:55.783405+02'),
-('How are you', 4, 1, '2025-10-29 14:04:50.305731+02', '2025-10-29 14:04:50.305731+02'),
-('I am good', 1, 4, '2025-10-29 14:05:12.610146+02', '2025-10-29 14:15:12.610146+02'),
-('aloooo??', 3, 2, '2025-10-29 14:05:32.980898+02', '2025-10-29 14:05:32.980898+02'),
-('where are you???', 3, 2, '2025-10-29 14:05:54.128405+02', '2025-10-29 14:05:54.128405+02'),
-('suiiiiiiiii', 1, 2, '2025-10-29 14:04:28.564591+02', '2025-10-29 15:04:28.564591+02'),
-('', 3, 1, '2025-10-29 14:04:28.564591+02', '2025-10-29 14:04:28.564591+02')
+('hello', 2, 1, '2025-10-26 14:03:52.783405+02', '2025-10-29 14:13:52.783405+02'),
+('hiii',  1, 2, '2025-10-29 14:03:55.783405+02', '2025-10-29 14:08:55.783405+02'),
+('How are you', 4, 1, '2025-10-30 17:04:50.305731+02', '2025-11-29 17:44:50.305731+02'),
+('I am good', 1, 4, '2025-10-29 14:05:12.610146+02', null)
+ON CONFLICT DO NOTHING;
+
+INSERT INTO public.messages (content, sender_id, receiver_id, sent_at) VALUES
+('aloooo??', 3, 2, '2025-10-29 14:05:32.980898+02'),
+('where are you???', 3, 2, '2025-10-29 14:05:54.128405+02'),
+('suiiiiiiiii', 1, 2, '2025-10-29 14:04:28.564591+02'),
+('', 3, 1, '2024-10-29 14:04:28.564591+02')
 ON CONFLICT DO NOTHING;

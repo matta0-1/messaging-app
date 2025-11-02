@@ -27,7 +27,6 @@ export class MessageController {
             }
 
             const data = await this.messageService.createMessage(req.body);
-            console.log(data)
             res.status(201).json(data);
         } catch (error) {
             next(error);

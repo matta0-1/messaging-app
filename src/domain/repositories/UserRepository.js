@@ -14,7 +14,7 @@ export class UserRepository {
      */
     async create({ username, firstName, lastName, email, password }) {
         const sql = `INSERT INTO users (username, first_name, last_name, email, password)
-        VALUES ($1, $2, $3, $4, $5)
+        VALUES (LOWER($1), $2, $3, $4, $5)
         RETURNING id, username, first_name, last_name, email, password, created_at;
         `;
         const { rows } = await pool.query(sql, [username, firstName, lastName, email, password]);
@@ -28,7 +28,7 @@ export class UserRepository {
      * @returns User if id and param1 arguments are valid, null otherwise
      */
     async update(id, { username, firstName, lastName, email, password }) {
-        const sql = `UPDATE users SET username = $1, first_name = $2, last_name = $3,
+        const sql = `UPDATE users SET username = LOWER($1), first_name = $2, last_name = $3,
         email = $4, password = $5 WHERE id = $6
         RETURNING id, username, first_name, last_name, email, password, created_at;
         `;
@@ -61,6 +61,19 @@ export class UserRepository {
         FROM users WHERE id = $1;`
 
         const { rows } = await pool.query(sql, [id]);
+        return rows[0] ? new User(rows[0]) : null;
+    }
+
+    /**
+     * Finds a user using his username
+     * @param {string} username
+     * @returns User if username is valid, null otherwise
+     */
+    async findByUsername(username) {
+        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        FROM users WHERE username = LOWER($1);`
+
+        const { rows } = await pool.query(sql, [username]);
         return rows[0] ? new User(rows[0]) : null;
     }
 

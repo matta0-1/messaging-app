@@ -11,3 +11,7 @@ export const upsertUser = [
     body('email').isEmail().withMessage('Invalid email address'),
     body('password').isStrongPassword().withMessage('Invalid password'),
 ];
+
+export const usernameParam = [
+    param('username').isString().isLength({ min: 1, max: 255 }).withMessage('Username must be a string between 1-255 characters'),
+];

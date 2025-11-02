@@ -28,13 +28,28 @@ export class UserController {
         }
     }
 
-    get = async (req, res, next) => {
+    getById = async (req, res, next) => {
         try {
             if (this._validate(req, res)) { // if not null --> there are errors
                 return;
             }
             const data = await this.userService.getUserById(req.params.id);
             if (!data) { // data = null , no user found
+                return res.status(404).json({ message: 'Not found' });
+            }
+            res.status(200).json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    getByUsername = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.getUserByUsername(req.params.username);
+            if (!data) {
                 return res.status(404).json({ message: 'Not found' });
             }
             res.status(200).json(data);

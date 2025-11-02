@@ -47,6 +47,26 @@ export class UserService {
     }
 
     /**
+     * Finds user by username
+     * @param {string} username 
+     * @returns UserDTO if successful, null otherwise
+     */
+    async getUserByUsername(username) {
+        try {
+            if (!username) {
+                throw new Error('Invalid username');
+            }
+            const user = await this.userRepository.findByUsername(username);
+            // if (!user) {
+            //     return null;
+            // }
+            return user ? UserDTO.fromEntity(user) : null;
+        } catch (error) {
+            throw new Error(`Failed to get user: ${error.message}`);
+        }
+    }
+
+    /**
      * Creates a user
      * @param {User} data 
      * @returns UserDTO

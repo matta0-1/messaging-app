@@ -44,7 +44,7 @@ export class MessageRepository {
      */
     async findAll() {
         const sql = `SELECT id, content, sender_id, receiver_id, sent_at, edited_at
-        FROM messages ORDER BY sent_at DESC;`; // Ordered chronoligically
+        FROM messages ORDER BY sent_at;`; // Ordered chronoligically
 
         const { rows } = await pool.query(sql);
         return rows.map(row => new Message(row));
@@ -101,7 +101,7 @@ export class MessageRepository {
         FROM messages 
         WHERE (sender_id = $1 AND receiver_id = $2)
         OR (sender_id = $2 AND receiver_id = $1)
-        ORDER BY sent_at DESC;`;
+        ORDER BY sent_at;`;
 
         const { rows } = await pool.query(sql, [user1Id, user2Id]);
         return rows ? rows.map(row => new Message(row)) : null;
@@ -119,7 +119,7 @@ export class MessageRepository {
         WHERE ((sender_id = $1 AND receiver_id = $2)
         OR (sender_id = $2 AND receiver_id = $1))
         AND content LIKE $3
-        ORDER BY sent_at DESC;`;
+        ORDER BY sent_at;`;
 
         const { rows } = await pool.query(sql, [user1Id, user2Id, `%${content}%`]);
 
