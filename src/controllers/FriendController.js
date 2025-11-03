@@ -6,7 +6,7 @@ import { validationResult } from "express-validator";
 export class FriendController {
     /**
      * Constructs a FriendController object
-     * @param {FriendService} friendService 
+     * @param {FriendService} friendService
      */
     constructor(friendService) {
         this.friendService = friendService;
@@ -98,6 +98,36 @@ export class FriendController {
             res.status(200).json(data);
         } catch (error) {
             next(error);
+        }
+    }
+
+    accept = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.friendService.acceptFriendRequest(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: 'No data found' });
+            }
+            res.status(201).json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    block = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.friendService.blockFriendRequest(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: 'No data found' });
+            }
+            res.status(201).json(data);
+        } catch (e) {
+            next(e);
         }
     }
 }

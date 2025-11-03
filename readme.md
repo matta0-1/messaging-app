@@ -27,6 +27,7 @@ Contains information about which users are friends and since when.
 Columns:
 - id : integer (Primary Key)
 - date_added : date
+- state: char (**a**: Accepted, **b**: Blocked, **p**: Pending)
 - user1_id : integer (Foreign Key to id in users table)
 - user2_id : integer (Foreign Key to id in users table)
 

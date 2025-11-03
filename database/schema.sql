@@ -45,6 +45,7 @@ CREATE TABLE public.friends
 (
     id serial NOT NULL,
     date_added date NOT NULL DEFAULT now(),
+    state char NOT NULL DEFAULT 'p',
     user1_id integer NOT NULL,
     user2_id integer NOT NULL,
     PRIMARY KEY (id),
@@ -59,7 +60,8 @@ CREATE TABLE public.friends
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID,
-    CHECK (user1_id < user2_id)
+    CHECK (user1_id < user2_id),
+    CHECK (state = 'p' OR state = 'a' OR state = 'b') -- p: Pending, a: Accepted, b:blocked
 );
 
 -- Create index on user_ids

@@ -4,7 +4,7 @@
  * by user1_id and user2_id
  */
 export class FriendWithDetailsDTO {
-    constructor({ id, date_added,
+    constructor({ id, date_added, state,
         user1_id, user1_username, user1_first_name, user1_last_name,
         user1_email, // user1_password,
         user1_created_at,
@@ -14,6 +14,7 @@ export class FriendWithDetailsDTO {
 
         this.id = id;
         this.date_added = date_added;
+        this.state = state;
 
         this.user1_id = user1_id;
         this.user1_username = user1_username;
