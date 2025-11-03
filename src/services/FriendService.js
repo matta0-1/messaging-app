@@ -34,7 +34,7 @@ export class FriendService {
     async getFriendById(id) {
         try {
             if (!id || isNaN(id)) {
-                throw new Error('Invalid Friend ID');
+                throw new Error('Invalid friend id');
             }
             const friend = await this.friendRepository.findById(id);
             // if (!friend) {
@@ -74,7 +74,7 @@ export class FriendService {
     }
 
     /**
-     * Updates data of a friend row - CANNOT BE USED
+     * Updates data of a friend row
      * @param {int} id
      * @param {Friend} data
      * @returns FriendDTO if successful, null otherwise
@@ -131,6 +131,30 @@ export class FriendService {
             return friendsWithDetails ? friendsWithDetails : null;
         } catch (error) {
             throw new Error(`Failed to list friends: ${error.message}`);
+        }
+    }
+
+    async acceptFriendRequest(id) {
+        try {
+            if (!id || isNaN(id)) {
+                throw new Error('Invalid friend id');
+            }
+            const friend = await this.friendRepository.acceptRequest(id);
+            return friend ? FriendDTO.fromEntity(friend) : null;
+        } catch (error) {
+            throw new Error(`Failed to accept friend request: ${error.message}`);
+        }
+    }
+
+    async blockFriendRequest(id) {
+        try {
+            if (!id || isNaN(id)) {
+                throw new Error('Invalid friend id');
+            }
+            const friend = await this.friendRepository.blockRequest(id);
+            return friend ? FriendDTO.fromEntity(friend) : null;
+        } catch (error) {
+            throw new Error(`Failed to block friend request: ${error.message}`);
         }
     }
 }

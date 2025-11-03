@@ -17,9 +17,10 @@ export const userRoutes = Router();
 userRoutes.get('/', controller.list); // List all users
 
 userRoutes.get('/id/:id', idParam, controller.getById); // List user by id
-userRoutes.get('/username/:username', usernameParam, controller.getByUsername); //////////////////
+userRoutes.get('/username/:username', usernameParam, controller.getByUsername); // List user by username
 
-userRoutes.get('/:id/friends', idParam, controller.getFriends); // List friends of user
+userRoutes.get('/id/:id/friends', idParam, controller.getFriendsById); // List friends of user by id
+userRoutes.get('/username/:username/friends', usernameParam, controller.getFriendsByUsername); // List friends of user by username
 
 userRoutes.put('/:id', [...idParam, upsertUser], controller.update); // modfify user by id 
 

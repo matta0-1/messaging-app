@@ -92,7 +92,7 @@ export class UserRepository {
      * @param {int} id 
      * @returns List<User> if successful, null otherwise
     */
-    async findFriendsOf(id) {
+    async findFriendsById(id) {
         const sql = `SELECT id, username, first_name, last_name, email,
             password, created_at FROM users WHERE id IN
                 (SELECT user1_id AS user_id FROM friends WHERE user2_id = $1
@@ -101,6 +101,30 @@ export class UserRepository {
             ORDER BY id ASC;`;
 
         const { rows } = await pool.query(sql, [id]);
+
+        // Return users if available, null otherwise
+        return rows[0] ? rows.map(row => new User(row)) : null;
+    }
+
+    /**
+     * Lists all friends of the user with the given username
+     * @param {string} username 
+     * @returns List<User> if successful, null otherwise
+    */
+    async findFriendsByUsername(username) {
+        // Retrieve userId from username then run the same query
+        const sql = `SELECT id, username, first_name, last_name, email,
+            password, created_at FROM users WHERE id IN
+                (
+                SELECT user1_id AS user_id FROM friends WHERE user2_id = 
+                    (SELECT id FROM users WHERE username = $1)
+                UNION
+                SELECT user2_id AS user_id FROM friends WHERE user1_id =
+                    (SELECT id FROM users WHERE username = $1)
+                )
+            ORDER BY id ASC;`;
+
+        const { rows } = await pool.query(sql, [username]);
 
         // Return users if available, null otherwise
         return rows[0] ? rows.map(row => new User(row)) : null;

@@ -3,10 +3,11 @@
  */
 
 export class FriendDTO {
-    constructor({ id = null, user1Id, user2Id, dateAdded }) {
+    constructor({ id = null, user1Id, user2Id, state, dateAdded }) {
         this.id = id;
         this.user1Id = user1Id;
         this.user2Id = user2Id;
+        this.state = state;
         this.dateAdded = dateAdded;
     }
 

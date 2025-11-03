@@ -26,7 +26,7 @@ export class FriendRepository {
 
         const sql = `INSERT INTO friends (user1_id, user2_id)
         VALUES ($1, $2)
-        RETURNING id, user1_id, user2_id, date_added;`;
+        RETURNING id, user1_id, user2_id, state, date_added;`;
 
         const { rows } = await pool.query(sql, [user1Id, user2Id]);
         return new Friend(rows[0]);
@@ -40,7 +40,7 @@ export class FriendRepository {
      * @param {Friend} param1
      * @returns Friend if id and param1 arguments are valid, null otherwise
      */
-    async update(id, { user1Id, user2Id }) {
+    async update(id, { user1Id, user2Id, state }) {
         // Ensure user1Id < user2Id
         if (user1Id > user2Id) {
             let temp = user1Id;
@@ -48,11 +48,11 @@ export class FriendRepository {
             user2Id = temp;
         }
 
-        const sql = `UPDATE friends SET user1_id = $1, user2_id = $2
-        WHERE id = $3
-        RETURNING id, user1_id, user2_id, date_added;`;
+        const sql = `UPDATE friends SET user1_id = $1, user2_id = $2, state = LOWER($3)
+        WHERE id = $4
+        RETURNING id, user1_id, user2_id, state, date_added;`;
 
-        const { rows } = await pool.query(sql, [user1Id, user2Id, id]);
+        const { rows } = await pool.query(sql, [user1Id, user2Id, state, id]);
         return rows[0] ? new Friend(rows[0]) : null;
     }
 
@@ -61,7 +61,7 @@ export class FriendRepository {
      * @returns List<Friend>
      */
     async findAll() {
-        const sql = `SELECT id, user1_id, user2_id, date_added
+        const sql = `SELECT id, user1_id, user2_id, state, date_added
         FROM friends ORDER BY id DESC;`;
 
         const { rows } = await pool.query(sql);
@@ -75,7 +75,7 @@ export class FriendRepository {
      * @returns Friend if id is valid, null otherwise
      */
     async findById(id) {
-        const sql = `SELECT id, user1_id, user2_id, date_added
+        const sql = `SELECT id, user1_id, user2_id, state, date_added
         FROM friends WHERE id = $1;`;
 
         const { rows } = await pool.query(sql, [id]);
@@ -101,7 +101,7 @@ export class FriendRepository {
      */
     async findAllWithDetails() {
         // replace each id in friends table with information about the user it refers to
-        const sql = `SELECT f.id, f.date_added,
+        const sql = `SELECT f.id, f.date_added, f.state,
     
             u1.id AS user1_id, u1.username AS user1_username,
             u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
@@ -121,5 +121,38 @@ export class FriendRepository {
         const { rows } = await pool.query(sql);
 
         return rows.map(row => new FriendWithDetailsDTO(row));
+    }
+
+    async acceptRequest(id) {
+        const sql = `UPDATE friends SET state = 'a'
+        WHERE id = $1
+        RETURNING id, user1_id, user2_id, state, date_added;`;
+
+        const { rows } = await pool.query(sql, [id]);
+        return rows[0] ? new Friend(rows[0]) : null;
+    }
+
+    async blockRequest(id) {
+        const sql = `UPDATE friends SET state = 'b'
+        WHERE id = $1
+        RETURNING id, user1_id, user2_id, state, date_added;`;
+
+        const { rows } = await pool.query(sql, [id]);
+        return rows[0] ? new Friend(rows[0]) : null;
+    }
+
+    async areFriends(user1Id, user2Id) {
+        // Ensure user1Id < user2Id
+        if (user1Id > user2Id) {
+            let temp = user1Id;
+            user1Id = user2Id;
+            user2Id = temp;
+        }
+
+        const sql = `SELECT id, user1_id, user2_id, date_added
+        FROM friends WHERE user1_id = $1 AND user2_id = $2;`;
+
+        const { rowCount } = await pool.query(sql, [user1Id, user2Id]);
+        return rowCount > 0;
     }
 }
