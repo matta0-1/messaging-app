@@ -27,11 +27,20 @@ export class MessageService {
             if (data.senderId === data.receiverId) {
                 throw new Error('Cannot send message to self')
             }
-            if (!await this.friendRepository.areFriends(data.senderId, data.receiverId)) {
+
+            const friends = await this.friendRepository.findByUserIds(data.senderId, data.receiverId);
+            if (!friends) {
                 throw new Error(`Users ${data.senderId} and ${data.receiverId} are not friends`);
+            } else if (friends['state'] === 'b') {
+                throw new Error(`Friend request between ${data.senderId} and ${data.receiverId} is currently blocked`)
+            } else if (friends['state'] === 'p') {
+                throw new Error(`Friend request between ${data.senderId} and ${data.receiverId} is currently pending`)
+            } else if (friends['state'] === 'a') {
+                const message = await this.messageRepository.create(data);
+                return MessageDTO.fromEntity(message);
+            } else {
+                throw new Error('Unknown error occurred');
             }
-            const message = await this.messageRepository.create(data);
-            return MessageDTO.fromEntity(message);
         } catch (error) {
             throw new Error(`Failed to create message: ${error.message}`);
         }
@@ -55,11 +64,20 @@ export class MessageService {
             if (data.senderId === data.receiverId) {
                 throw new Error('Cannot send message to self')
             }
-            if (!await this.friendRepository.areFriends(data.senderId, data.receiverId)) {
+
+            const friends = await this.friendRepository.findByUserIds(data.senderId, data.receiverId);
+            if (!friends) {
                 throw new Error(`Users ${data.senderId} and ${data.receiverId} are not friends`);
+            } else if (friends['state'] === 'b') {
+                throw new Error(`Friend request between ${data.senderId} and ${data.receiverId} is currently blocked`)
+            } else if (friends['state'] === 'p') {
+                throw new Error(`Friend request between ${data.senderId} and ${data.receiverId} is currently pending`)
+            } else if (friends['state'] === 'a') {
+                const message = await this.messageRepository.update(id, data);
+                return message ? MessageDTO.fromEntity(message) : null;
+            } else {
+                throw new Error('Unknown error occurred');
             }
-            const message = await this.messageRepository.update(id, data);
-            return message ? MessageDTO.fromEntity(message) : null;
         } catch (error) {
             throw new Error(`Failed to update message: ${error.message}`);
         }
