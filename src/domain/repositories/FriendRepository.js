@@ -102,7 +102,7 @@ export class FriendRepository {
     async findAllWithDetails() {
         // replace each id in friends table with information about the user it refers to
         const sql = `SELECT f.id, f.date_added, f.state,
-    
+
             u1.id AS user1_id, u1.username AS user1_username,
             u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
             u1.email AS user1_email, u1.password AS user1_password,
@@ -141,7 +141,7 @@ export class FriendRepository {
         return rows[0] ? new Friend(rows[0]) : null;
     }
 
-    async areFriends(user1Id, user2Id) {
+    async findByUserIds(user1Id, user2Id) {
         // Ensure user1Id < user2Id
         if (user1Id > user2Id) {
             let temp = user1Id;
@@ -149,10 +149,10 @@ export class FriendRepository {
             user2Id = temp;
         }
 
-        const sql = `SELECT id, user1_id, user2_id, date_added
+        const sql = `SELECT id, user1_id, user2_id, date_added, state
         FROM friends WHERE user1_id = $1 AND user2_id = $2;`;
 
-        const { rowCount } = await pool.query(sql, [user1Id, user2Id]);
-        return rowCount > 0;
+        const { rows } = await pool.query(sql, [user1Id, user2Id]);
+        return rows[0] ? new Friend(rows[0]) : null;
     }
 }

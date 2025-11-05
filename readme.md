@@ -1,4 +1,4 @@
-# Messaging Web Application
+# Messaging Website
 This website allows users to add each other as friends and chat together. 
 
 ## Setup and Running Instructions
