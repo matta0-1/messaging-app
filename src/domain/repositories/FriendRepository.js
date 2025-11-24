@@ -107,12 +107,12 @@ export class FriendRepository {
             u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
             u1.email AS user1_email, u1.password AS user1_password,
             u1.created_at AS user1_created_at,
-    
+
             u2.id AS user2_id, u2.username AS user2_username,
             u2.first_name AS user2_first_name, u2.last_name AS user2_last_name,
             u2.email AS user2_email, u2.password AS user2_password,
             u2.created_at AS user2_created_at
-    
+
             FROM friends AS f
                 INNER JOIN users AS u1 ON u1.id = f.user1_id
                 INNER JOIN users AS u2 ON u2.id = f.user2_id
