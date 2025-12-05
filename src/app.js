@@ -8,8 +8,8 @@ import { healthCheck } from './config/db.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 
 import { userRoutes } from './routes/userRoutes.js';
-import { friendRoutes } from './routes/FriendRoutes.js';
-import { messageRoutes } from './routes/MessageRoutes.js';
+import { friendRoutes } from './routes/friendRoutes.js';
+import { messageRoutes } from './routes/messageRoutes.js';
 
 import { userViewRoutes } from './routes/userViewRoutes.js';
 

@@ -105,12 +105,12 @@ export class FriendRepository {
 
             u1.id AS user1_id, u1.username AS user1_username,
             u1.first_name AS user1_first_name, u1.last_name AS user1_last_name,
-            u1.email AS user1_email, u1.password AS user1_password,
+            u1.email AS user1_email,
             u1.created_at AS user1_created_at,
 
             u2.id AS user2_id, u2.username AS user2_username,
             u2.first_name AS user2_first_name, u2.last_name AS user2_last_name,
-            u2.email AS user2_email, u2.password AS user2_password,
+            u2.email AS user2_email,
             u2.created_at AS user2_created_at
 
             FROM friends AS f

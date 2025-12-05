@@ -64,7 +64,7 @@ export class FriendService {
                 message = `Users ${data.user1Id} and ${data.user2Id} are already friends`;
             } else if (error.message == 'insert or update on table \"friends\" violates foreign key constraint \"friends_user2_id_fkey\"') {
                 message = "One or both users do not exist";
-            } else if (error.message = 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
+            } else if (error.message == 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
                 message = "Cannot add yourself as a friend";
             } else {
                 message = error.message;
@@ -95,7 +95,7 @@ export class FriendService {
                 message = `Users ${data.user1Id} and ${data.user2Id} are already friends`;
             } else if (error.message == 'insert or update on table \"friends\" violates foreign key constraint \"friends_user2_id_fkey\"') {
                 message = "One or both users do not exist";
-            } else if (error.message = 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
+            } else if (error.message == 'new row for relation \"friends\" violates check constraint \"friends_check\"') {
                 message = "Cannot add yourself as a friend";
             } else {
                 message = error.message;

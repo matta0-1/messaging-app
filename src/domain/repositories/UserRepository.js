@@ -5,6 +5,9 @@
 
 import { pool } from "../../config/db.js";
 import { User } from "../entities/User.js";
+import bcrypt from "bcrypt";
+
+const saltRounds = 10; // for hashing passwords
 
 export class UserRepository {
     /**
@@ -17,7 +20,10 @@ export class UserRepository {
         VALUES (LOWER($1), $2, $3, $4, $5)
         RETURNING id, username, first_name, last_name, email, password, created_at;
         `;
-        const { rows } = await pool.query(sql, [username, firstName, lastName, email, password]);
+
+        // password = await bcrypt.hash(password, saltRounds);
+        const { rows } = await pool.query(sql, [username, firstName, lastName, email,
+            await bcrypt.hash(password, saltRounds)]);
         return new User(rows[0]);
     }
 
@@ -32,8 +38,10 @@ export class UserRepository {
         email = $4, password = $5 WHERE id = $6
         RETURNING id, username, first_name, last_name, email, password, created_at;
         `;
-        const { rows } = await pool.query(sql, [username, firstName, lastName, email, password, id]);
 
+        password = await bcrypt.hash(password, saltRounds);
+        const { rows } = await pool.query(sql, [username, firstName, lastName, email,
+            await bcrypt.hash(password, saltRounds), id]);
         return rows[0] ? new User(rows[0]) : null;
     }
 
@@ -42,7 +50,7 @@ export class UserRepository {
      * @returns List<User>
      */
     async findAll() {
-        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        const sql = `SELECT id, username, first_name, last_name, email, created_at
         FROM users ORDER BY id DESC;`;
 
         // let rows = await pool.query(sql);
@@ -57,7 +65,7 @@ export class UserRepository {
      * @returns User if id is valid, null otherwise
      */
     async findById(id) {
-        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        const sql = `SELECT id, username, first_name, last_name, email, created_at
         FROM users WHERE id = $1;`
 
         const { rows } = await pool.query(sql, [id]);
@@ -70,7 +78,7 @@ export class UserRepository {
      * @returns User if username is valid, null otherwise
      */
     async findByUsername(username) {
-        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        const sql = `SELECT id, username, first_name, last_name, email, created_at
         FROM users WHERE username = LOWER($1);`
 
         const { rows } = await pool.query(sql, [username]);
@@ -94,7 +102,7 @@ export class UserRepository {
     */
     async findFriendsById(id) {
         const sql = `SELECT id, username, first_name, last_name, email,
-            password, created_at FROM users WHERE id IN
+            created_at FROM users WHERE id IN
                 (SELECT user1_id AS user_id FROM friends WHERE user2_id = $1
                 UNION
                 SELECT user2_id AS user_id FROM friends WHERE user1_id = $1)
@@ -114,7 +122,7 @@ export class UserRepository {
     async findFriendsByUsername(username) {
         // Retrieve userId from username then run the same query
         const sql = `SELECT id, username, first_name, last_name, email,
-            password, created_at FROM users WHERE id IN
+            created_at FROM users WHERE id IN
                 (
                 SELECT user1_id AS user_id FROM friends WHERE user2_id = 
                     (SELECT id FROM users WHERE username = $1)
