@@ -1,15 +1,12 @@
 import { Router } from 'express';
 import { UserRepository } from '../domain/repositories/UserRepository.js';
 import { UserService } from '../services/UserService.js';
-import { validationResult } from 'express-validator';
-import { upsertUser, idParam } from '../validators/userValidators.js';
+import { UserViewController } from "../controllers/UserViewController.js";
 
+const repo = new UserRepository();
+const service = new UserService(repo);
+const controller = new UserViewController(service);
 
-const router = Router();
+export const userViewRoutes = Router();
 
-router.get('/', async (req, res, next) => {
-    res.render("EH");
-})
-
-
-export { router as userViewRoutes }; 
+userViewRoutes.get('/', controller.list);

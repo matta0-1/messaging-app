@@ -19,8 +19,16 @@ userRoutes.get('/', controller.list); // List all users
 userRoutes.get('/id/:id', idParam, controller.getById); // List user by id
 userRoutes.get('/username/:username', usernameParam, controller.getByUsername); // List user by username
 
+
 userRoutes.get('/id/:id/friends', idParam, controller.getFriendsById); // List friends of user by id
 userRoutes.get('/username/:username/friends', usernameParam, controller.getFriendsByUsername); // List friends of user by username
+
+userRoutes.get('/id/:id/pending-friends', idParam, controller.getPendingFriendsById); // List pending friend requests of user by id
+userRoutes.get('/username/:username/pending-friends', usernameParam, controller.getPendingFriendsByUsername); // List pending friend requests of user by username
+
+userRoutes.get('/id/:id/blocked-friends', idParam, controller.getBlockedFriendsById); // List blocked friend requests of user by id
+userRoutes.get('/username/:username/blocked-friends', usernameParam, controller.getBlockedFriendsByUsername); // List blocked friend requests of user by username
+
 
 userRoutes.put('/:id', [...idParam, upsertUser], controller.update); // modfify user by id 
 

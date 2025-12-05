@@ -5,7 +5,7 @@ import { validationResult } from "express-validator";
 
 export class UserController {
     /**
-     * Constructs a UserControlled object
+     * Constructs a UserController object
      * @param {UserService} userService 
      */
     constructor(userService) {
@@ -128,6 +128,69 @@ export class UserController {
             const data = await this.userService.listFriendsByUsername(req.params.username);
             if (!data) {
                 return res.status(404).json({ message: `User ${req.params.username} has no friends or does not exist` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+
+    getPendingFriendsById = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.listPendingFriendsById(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: `User ${req.params.id} has no pending friend requests or does not exist` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    getPendingFriendsByUsername = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.listPendingFriendsByUsername(req.params.username);
+            if (!data) {
+                return res.status(404).json({ message: `User ${req.params.username} has no pending friend requests or does not exist` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
+    getBlockedFriendsById = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.listBlockedFriendsById(req.params.id);
+            if (!data) {
+                return res.status(404).json({ message: `User ${req.params.id} has no blocked friend requests or does not exist` });
+            }
+            res.status(200).json(data);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    getBlockedFriendsByUsername = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            const data = await this.userService.listBlockedFriendsByUsername(req.params.username);
+            if (!data) {
+                return res.status(404).json({ message: `User ${req.params.username} has no blocked friend requests or does not exist` });
             }
             res.status(200).json(data);
         } catch (error) {

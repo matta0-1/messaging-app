@@ -160,4 +160,63 @@ export class UserService {
             throw new Error(`Failed to list friends of user with username ${username}`);
         }
     }
+
+
+
+    /**
+     * Lists all pending friend requests of a user using id
+     * @param {int} id
+     * @returns List<UserDTO>
+     */
+    async listPendingFriendsById(id) {
+        try {
+            const users = await this.userRepository.findPendingFriendsById(id);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list pending friend requests of user with id ${id}`);
+        }
+    }
+
+    /**
+     * Lists all pending friend requests of a user using username
+     * @param {string} username
+     * @returns List<UserDTO>
+     */
+    async listPendingFriendsByUsername(username) {
+        try {
+            const users = await this.userRepository.findPendingFriendsByUsername(username);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list pending friend requests of user with username ${username}`);
+        }
+    }
+
+
+    /**
+     * Lists all blocked friend requests of a user using id
+     * @param {int} id
+     * @returns List<UserDTO>
+     */
+    async listBlockedFriendsById(id) {
+        try {
+            const users = await this.userRepository.findBlockedFriendsById(id);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list blocked friend requests of user with id ${id}`);
+        }
+    }
+
+    /**
+     * Lists all blocked friend requests of a user using username
+     * @param {string} username
+     * @returns List<UserDTO>
+     */
+    async listBlockedFriendsByUsername(username) {
+        try {
+            const users = await this.userRepository.findBlockedFriendsByUsername(username);
+            return users ? users.map(user => UserDTO.fromEntity(user)) : null;
+        } catch (error) {
+            throw new Error(`Failed to list blocked friend requests of user with username ${username}`);
+        }
+    }
 }
