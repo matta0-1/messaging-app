@@ -1,17 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
+
 
 import methodOverride from 'method-override';
 
 import { healthCheck } from './config/db.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { authMiddleWare } from './middlewares/authMiddleware.js'
 
 import { userRoutes } from './routes/userRoutes.js';
 import { friendRoutes } from './routes/friendRoutes.js';
 import { messageRoutes } from './routes/messageRoutes.js';
+import { authRoutes } from './routes/authRoutes.js';
 
-import { userViewRoutes } from './routes/userViewRoutes.js';
+//import { userViewRoutes } from './routes/userViewRoutes.js';
 
 dotenv.config();
 
@@ -26,15 +31,12 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
-    res.render('index', {
-        title: 'Messaging application',
-        message: 'Welcome back',
-        port: process.env.PORT || 4000,
-        env: process.env.NODE_ENV || 'development'
-    });
+    return res.redirect('/home');
 });
+
 
 app.get('/health', async (req, res) => {
     try {
@@ -42,12 +44,23 @@ app.get('/health', async (req, res) => {
     } catch (e) {
         res.status(500).json({ ok: false });
     }
-})
+});
 
+// API routes do need authentication (For development only)
 app.use('/api/users', userRoutes);
 app.use('/api/friends', friendRoutes);
 app.use('/api/messages', messageRoutes);
 
-app.use('/users', userViewRoutes);
+app.use('/auth', authRoutes);
+app.use(authMiddleWare);
+
+app.get('/home', (req, res) => {
+    res.send(req.user);
+
+});
+
+// app.get('/whoami', (req, res) => {
+//     res.send(`You are logged in as ${req.user.username} (id=${req.user.id})`);
+// });
 
 app.use(errorHandler);

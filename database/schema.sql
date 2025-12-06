@@ -28,14 +28,14 @@ CREATE INDEX IF NOT EXISTS idx_username
 
 -- Insert sample data in users table
 INSERT INTO public.users (username, first_name, last_name, email, password) VALUES
-('mat', 'Matthew', 'Tannous', 'matthewtannous@mail.com', 'WEbMat226'),
-('joe', 'john', 'paul', 'john.paul@gmail.com', 'myPASS'),
-('coder', 'paul', 'tanios', 'paultanios@gmail.com', 'paulPassVeryGood123')
+('mat', 'Matthew', 'Tannous', 'matthewtannous@mail.com', '$2b$10$z/Uu5PB1o.AuFY.JPGup8O9qFzuG9t8IZQsD2Z3.nuDd3hgsZpXaa'), -- original password: WEbMat226
+('joe', 'john', 'paul', 'john.paul@gmail.com', '$2b$10$UW6ufnWkGyk84huwpZubvuaHrg.fGV/DnZstzZjnnH//XPxMQany.'), -- original password: myPASS
+('coder', 'paul', 'tanios', 'paultanios@gmail.com', '$2b$10$8UnlT8nZCqsF/1dogELVpOYbza60naIP3C9IOAQsxMW9Zng7m1ZFe') -- original password: paulPassVeryGood123
 ON CONFLICT DO NOTHING;
 
 INSERT INTO public.users (username, first_name, last_name, email, password, created_at) VALUES
-('web_dev', 'elias', 'saile', 'lais@mail.mail', '123456789password', '2024-10-19'),
-('god', 'Mike', 'Tanios', 'Mike.tanios@gmail.com', 'Mike13Tan!!', '2025-4-13') 
+('web_dev', 'elias', 'saile', 'lais@mail.mail', '$2b$10$/Wwqu.JVgbJnfl6RZbpnI.bvgAXK23eC09abG0QmTgV5fyufpCgNe', '2024-10-19'), -- original password: 123456789password
+('god', 'Mike', 'Tanios', 'Mike.tanios@gmail.com', '$2b$10$En2X9zDU5H95pFCD0.hKPO4AOq18vDJQCPh/aOmCDLl45Mr45anVu', '2025-4-13')  -- original password: Mike13Tan!!
 ON CONFLICT DO NOTHING;
 
 

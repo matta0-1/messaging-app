@@ -86,6 +86,19 @@ export class UserRepository {
     }
 
     /**
+     * Finds a user using his username (returning password for login)
+     * @param {string} username
+     * @returns User if username is valid, null otherwise
+     */
+    async findByUsernameGettingPassword(username) {
+        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        FROM users WHERE username = LOWER($1);`
+
+        const { rows } = await pool.query(sql, [username]);
+        return rows[0] ? new User(rows[0]) : null;
+    }
+
+    /**
      * Deletes a user using his id
      * @param {int} id
      * @returns int

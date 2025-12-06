@@ -1,0 +1,26 @@
+<div style="text-align: center;">
+    <h1>Welcome to Web Messenger</h1>
+    <h2>Login</h2>
+    <form style="margin-top: 30px;" action="/auth/login" method="POST">
+        <input type="text" name="username" placeholder="Username" style="margin-bottom: 15px;" required>
+        <input type="password" name="password" placeholder="Password" style="margin-bottom: 20px;" required>
+
+        <div style="display: flex; gap: 15px; justify-content: center;">
+            <button type="submit" class="btn" style="margin-top: 0;">Login</button>
+            <button type="button" class="btn" onclick="window.location.href='/auth/signup'" style="margin-top: 0;">
+                Go to Sign up</button>
+        </div>
+
+        <% if (typeof error !=='undefined' && error) { %>
+            <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
+                <%= error %>
+            </p>
+            <% } %>
+
+                <% if (typeof success !=='undefined' && success) { %>
+                    <p style="color: #44ff44; margin-top: 20px; font-size: 0.95rem;">
+                        <%= success %>
+                    </p>
+                    <% } %>
+    </form>
+</div>
