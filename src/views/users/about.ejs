@@ -1,0 +1,32 @@
+<% layout='layout' %>
+    <% title='About' %>
+        <div>
+            <h1>Your personal info:</h1>
+
+            <h2>Username: <%= user.username %>
+            </h2>
+            <h2>First name: <%= user.firstName %>
+            </h2>
+            <h2>Last name: <%= user.lastName %>
+            </h2>
+            <h2>Email: <%= user.email %>
+            </h2>
+            <h2>Account creation date: <%= user.createdAt %>
+            </h2>
+        </div>
+
+        <div>
+            <form action="/auth/logout" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-danger">
+                    Log out
+                </button>
+            </form>
+        </div>
+        <div>
+            <form action="/users" method="POST" style="display:inline;">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger">
+                    Delete account
+                </button>
+            </form>
+        </div>

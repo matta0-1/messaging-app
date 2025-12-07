@@ -157,4 +157,16 @@ export class FriendService {
             throw new Error(`Failed to block friend request: ${error.message}`);
         }
     }
+
+    async findFriendIdByUserIds(user1Id, user2Id) {
+        try {
+            if (!user1Id || isNaN(user1Id) || !user2Id || isNaN(user2Id)) {
+                throw new Error('Invalid friend id');
+            }
+            const friend = await this.friendRepository.findByUserIds(user1Id, user2Id);
+            return friend ? FriendDTO.fromEntity(friend) : null;
+        } catch (error) {
+            throw new Error(`Failed to block friend request: ${error.message}`);
+        }
+    }
 }

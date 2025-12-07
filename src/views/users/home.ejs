@@ -1,0 +1,26 @@
+<% layout='layout' %>
+    <% title='Home' %>
+
+        <div class="container text-center mt-4">
+
+            <h2>Hello, <%= user.username %> 👋</h2>
+            <p>Welcome to Web Messenger. What would you like to do?</p>
+
+            <div class="row mt-4 justify-content-center" style="gap: 20px;">
+                <div class="card" style="width: 16rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Friends</h5>
+                        <p class="card-text">See who you are connected with and add new friends.</p>
+                        <a href="/users/friends" class="btn btn-primary">Go to Friends</a>
+                    </div>
+                </div>
+
+                <div class="card" style="width: 16rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Your Profile</h5>
+                        <p class="card-text">Update your information or adjust settings.</p>
+                        <a href="/users/about" class="btn btn-primary">Go to Profile</a>
+                    </div>
+                </div>
+            </div>
+        </div>

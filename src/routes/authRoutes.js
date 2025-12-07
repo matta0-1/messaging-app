@@ -22,6 +22,3 @@ authRoutes.post('/login', controller.login);
 authRoutes.post('/signup', upsertUser, controller.signup);
 
 authRoutes.post('/logout', controller.logout);
-
-// DELETE LATERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-authRoutes.get('/logout', controller.logout); // (just for testing)

@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import expressEjsLayouts from 'express-ejs-layouts';
 
 
 import methodOverride from 'method-override';
@@ -15,8 +15,8 @@ import { userRoutes } from './routes/userRoutes.js';
 import { friendRoutes } from './routes/friendRoutes.js';
 import { messageRoutes } from './routes/messageRoutes.js';
 import { authRoutes } from './routes/authRoutes.js';
-
-//import { userViewRoutes } from './routes/userViewRoutes.js';
+import { userViewRoutes } from './routes/userViewRoutes.js';
+import { friendViewRoutes } from './routes/friendViewRoutes.js';
 
 dotenv.config();
 
@@ -25,16 +25,20 @@ export const app = express();
 app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
-app.use(express.json());
-app.use(cors());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+app.use(express.json());
+app.use(cors());
+
 app.use(cookieParser());
 
+app.use(expressEjsLayouts);
+app.set('layout', 'layout');
+
 app.get('/', (req, res) => {
-    return res.redirect('/home');
+    return res.redirect('/users/home');
 });
 
 
@@ -54,10 +58,14 @@ app.use('/api/messages', messageRoutes);
 app.use('/auth', authRoutes);
 app.use(authMiddleWare);
 
-app.get('/home', (req, res) => {
-    res.send(req.user);
+app.use('/users', userViewRoutes);
+app.use('/friends', friendViewRoutes);
 
-});
+// app.get('/home', (req, res) => {
+//     res.render('users/home', {
+//         user: req.user,
+//     })
+// });
 
 // app.get('/whoami', (req, res) => {
 //     res.send(`You are logged in as ${req.user.username} (id=${req.user.id})`);

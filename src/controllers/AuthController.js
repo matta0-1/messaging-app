@@ -19,6 +19,7 @@ export class AuthController {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             res.status(400).render(viewName, {
+                layout: false,
                 error: errors.array()[0].msg,
             });
             return true;
@@ -40,11 +41,12 @@ export class AuthController {
                 maxAge: 24 * 60 * 60 * 1000
             });
 
-            return res.redirect('/home');
+            return res.redirect('/users/home');
 
         } catch (e) {
             // next(e);
             res.render('login', {
+                layout: false,
                 error: e.message,
             });
         }
@@ -64,11 +66,12 @@ export class AuthController {
                 maxAge: 24 * 60 * 60 * 1000
             });
 
-            return res.redirect('/home');
+            return res.redirect('/users/home');
 
         } catch (e) {
             // next(e);
             res.render('signup', {
+                layout: false,
                 error: e.message,
             });
         }
@@ -77,10 +80,13 @@ export class AuthController {
     showLoginPage = async (req, res, next) => {
         try {
             if (req.user) {
-                return res.redirect('/home');
+                return res.redirect('/users/home');
             }
 
-            res.render('login', { error: null });
+            res.render('login', {
+                layout: false,
+                error: null
+            });
         } catch (e) {
             next(e)
         }
@@ -88,10 +94,13 @@ export class AuthController {
     showSignUpPage = async (req, res, next) => {
         try {
             if (req.user) {
-                return res.redirect('/home');
+                return res.redirect('/users/home');
             }
 
-            res.render('signup', { error: null });
+            res.render('signup', {
+                layout: false,
+                error: null,
+            });
         } catch (e) {
             next(e)
         }
