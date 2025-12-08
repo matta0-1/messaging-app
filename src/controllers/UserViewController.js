@@ -51,6 +51,7 @@ export class UserViewController {
     getAboutPage = async (req, res, next) => {
         try {
             const user = await this.userService.getUserById(req.user.id);
+
             res.render('users/about', {
                 user: user,
             });
@@ -61,7 +62,27 @@ export class UserViewController {
 
     getAllUsersPage = async (req, res, next) => {
         try {
-            const users = await this.userService.listUsers();
+            // Get all users
+            let users = await this.userService.listUsers();
+
+            // remove self
+            users = users.filter(user => user.id !== req.user.id);
+
+            // remove users who have a friend request with user who entered the page
+            const acceptedFriends = await this.userService.listFriendsById(req.user.id);
+            const pendingFriends = await this.userService.listPendingFriendsById(req.user.id);
+            const blockedFriends = await this.userService.listBlockedFriendsById(req.user.id);
+
+            if (acceptedFriends !== null && users !== null) {
+                users = users.filter(user => !acceptedFriends.filter(friend => friend.id === user.id).length);
+            }
+            if (pendingFriends !== null && users !== null) {
+                users = users.filter(user => !pendingFriends.filter(friend => friend.id === user.id).length);
+            }
+            if (blockedFriends !== null && users !== null) {
+                users = users.filter(user => !blockedFriends.filter(friend => friend.id === user.id).length);
+            }
+
             res.render('users/list', {
                 users: users,
             });

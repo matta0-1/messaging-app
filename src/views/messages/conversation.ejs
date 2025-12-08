@@ -1,0 +1,35 @@
+<% layout='layout' %>
+    <% title='Conversation' %>
+
+        <p>Conversation with <%= user2.username %>
+        </p>
+
+        <% if (messages && messages.length> 0) { %>
+            <div class="chat-container">
+                <% messages.forEach(message=> { %>
+                    <div class="message <%= message.senderId === user1Id ? 'me' : 'other' %>">
+                        <div class="message-content">
+                            <%= message.content %>
+                        </div>
+                        <div class="message-footer">
+                            <small>
+                                <% const sentDate=new Date(message.sentAt); %>
+                                    <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
+                                        ,day: '2-digit' , month: 'short' }) %>
+                            </small>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+            <%} else { %>
+                <div>
+                    <p>Start the Conversation!!</p>
+                </div>
+                <% } %>
+
+
+                    <!-- Message input form -->
+                    <form action="/messages/<%=user2.id%>" method="POST" class="message-form">
+                        <input type="text" name="content" placeholder="Send a message" required autocomplete="off" />
+                        <button type="submit">Send</button>
+                    </form>

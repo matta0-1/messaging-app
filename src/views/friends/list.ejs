@@ -1,7 +1,7 @@
 <% layout='layout' %>
     <% title='Friends' %>
         <div>
-            <h1>Here are your friends <%= user.username %>:</h1>
+            <h1>Here are your friends, <%= user.username %>:</h1>
         </div>
 
         <div>
@@ -46,70 +46,79 @@
             <p>
                 <% if (pendingFriends && pendingFriends.length> 0) { %>
                     <h2>Pending friends:</h2>
-                    <% pendingFriends.forEach(friend=> { %>
-                        <tr>
-                            <td>
-                                <%=friend.username %>
-                            </td>
+                    <table>
+                        <% pendingFriends.forEach(friend=> { %>
+                            <tr>
+                                <td>
+                                    <%=friend.username %>
+                                </td>
 
-                            <td>
-                                <form action="/friends/accept/<%= friend.id %>" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button type="submit" class="btn btn-warning"> Accept </button>
-                                </form>
-                            </td>
+                                <td>
+                                    <form action="/friends/accept/<%= friend.id %>" method="POST"
+                                        style="display:inline;">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button type="submit" class="btn btn-primary"> Accept </button>
+                                    </form>
+                                </td>
 
-                            <td>
-                                <form action="/friends/block/<%= friend.id %>" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button type="submit" class="btn btn-warning"> Block </button>
-                                </form>
-                            </td>
+                                <td>
+                                    <form action="/friends/block/<%= friend.id %>" method="POST"
+                                        style="display:inline;">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button type="submit" class="btn btn-warning"> Block </button>
+                                    </form>
+                                </td>
 
-                            <td>
-                                <form action="/friends/delete/<%= friend.id%>" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <%})%>
-                            <%} else { %>
-                                <h5>No pending friend requests</h5>
-                                <%}%>
+                                <td>
+                                    <form action="/friends/delete/<%= friend.id%>" method="POST"
+                                        style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%})%>
+                    </table>
+                    <%} else { %>
+                        <h5>No pending friend requests</h5>
+                        <%}%>
             </p>
 
             <p>
                 <% if (blockedFriends && blockedFriends.length> 0) { %>
                     <h2>Blocked friends:</h2>
-                    <% blockedFriends.forEach(friend=> { %>
-                        <tr>
-                            <td>
-                                <%=friend.username %>
-                            </td>
+                    <table>
+                        <% blockedFriends.forEach(friend=> { %>
+                            <tr>
+                                <td>
+                                    <%=friend.username %>
+                                </td>
 
-                            <td>
-                                <form action="/friends/accept/<%= friend.id %>" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_method" value="PUT">
-                                    <button type="submit" class="btn btn-warning"> Accept </button>
-                                </form>
-                            </td>
+                                <td>
+                                    <form action="/friends/accept/<%= friend.id %>" method="POST"
+                                        style="display:inline;">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <button type="submit" class="btn btn-primary"> Accept </button>
+                                    </form>
+                                </td>
 
-                            <td>
-                                <form action="/friends/delete/<%= friend.id%>" method="POST" style="display:inline;">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <button type="submit" class="btn btn-danger">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <%})%>
-                            <%} else { %>
-                                <h5>No blocked friend requests</h5>
-                                <%}%>
+                                <td>
+                                    <form action="/friends/delete/<%= friend.id%>" method="POST"
+                                        style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <%})%>
+                    </table>
+                    <%} else { %>
+                        <h5>No blocked friend requests</h5>
+                        <%}%>
             </p>
         </div>
 

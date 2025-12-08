@@ -7,7 +7,7 @@ import { UserDTO } from "../domain/dto/UserDTO.js";
 export class UserService {
     /**
      * Constructs a UserService object
-     * @param {UserRepository} userRepository 
+     * @param {UserRepository} userRepository
      */
     constructor(userRepository) {
         this.userRepository = userRepository;

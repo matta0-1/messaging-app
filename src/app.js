@@ -15,8 +15,10 @@ import { userRoutes } from './routes/userRoutes.js';
 import { friendRoutes } from './routes/friendRoutes.js';
 import { messageRoutes } from './routes/messageRoutes.js';
 import { authRoutes } from './routes/authRoutes.js';
+
 import { userViewRoutes } from './routes/userViewRoutes.js';
 import { friendViewRoutes } from './routes/friendViewRoutes.js';
+import { messageViewRoutes } from './routes/messageViewRoutes.js';
 
 dotenv.config();
 
@@ -60,6 +62,7 @@ app.use(authMiddleWare);
 
 app.use('/users', userViewRoutes);
 app.use('/friends', friendViewRoutes);
+app.use('/messages', messageViewRoutes);
 
 // app.get('/home', (req, res) => {
 //     res.render('users/home', {

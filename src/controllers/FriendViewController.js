@@ -70,4 +70,19 @@ export class FriendViewController {
             next(e);
         }
     }
+
+    create = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+            // const data = await this.friendService.createFriend(req.user.id, req.params.id);
+
+            const data = { user1Id: req.user.id, user2Id: req.params.id };
+            await this.friendService.createFriend(data); // no need the return value
+            return res.redirect('/users/all'); // keep user on the same page
+        } catch (e) {
+            next(e);
+        }
+    }
 }

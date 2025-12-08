@@ -20,3 +20,7 @@ friendViewRoutes.put('/accept/:id', idParam, controller.accept); // CHANGE TO PU
 friendViewRoutes.put('/block/:id', idParam, controller.block); // CHANGE TO PUT
 
 friendViewRoutes.delete('/delete/:id', idParam, controller.delete); // CHANGE TO DELETE
+
+
+// validate id from url as the other id comes from the cookie
+friendViewRoutes.post('/:id', idParam, controller.create); // add friend
