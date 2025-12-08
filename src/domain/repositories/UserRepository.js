@@ -46,6 +46,37 @@ export class UserRepository {
     }
 
     /**
+     * Updates email of a user (used in frontend)
+     * @param {int} id
+     * @param {string} email
+     * @returns User if id and param1 arguments are valid, null otherwise
+     */
+    async updateEmail(id, email) {
+        const sql = `UPDATE users SET email = $1 WHERE id = $2
+        RETURNING id, username, first_name, last_name, email, password, created_at;
+        `;
+
+        const { rows } = await pool.query(sql, [email, id]);
+        return rows[0] ? new User(rows[0]) : null;
+    }
+
+
+    /**
+     * Updates email of a user (used in frontend)
+     * @param {int} id
+     * @param {string} password
+     * @returns User if id and param1 arguments are valid, null otherwise
+     */
+    async updatePassword(id, password) {
+        const sql = `UPDATE users SET password = $1 WHERE id = $2
+        RETURNING id, username, first_name, last_name, email, password, created_at;
+        `;
+
+        const { rows } = await pool.query(sql, [await bcrypt.hash(password, saltRounds), id]);
+        return rows[0] ? new User(rows[0]) : null;
+    }
+
+    /**
      * Lists all users
      * @returns List<User>
      */
@@ -92,9 +123,22 @@ export class UserRepository {
      */
     async findByUsernameGettingPassword(username) {
         const sql = `SELECT id, username, first_name, last_name, email, password, created_at
-        FROM users WHERE username = LOWER($1);`
+        FROM users WHERE username = LOWER($1);`;
 
         const { rows } = await pool.query(sql, [username]);
+        return rows[0] ? new User(rows[0]) : null;
+    }
+
+    /**
+     * Finds a user using his id (returning password for password change)
+     * @param {int} int
+     * @returns User if username is valid, null otherwise
+     */
+    async findByIdGettingPassword(id) {
+        const sql = `SELECT id, username, first_name, last_name, email, password, created_at
+        FROM users WHERE id = $1;`;
+
+        const { rows } = await pool.query(sql, [id]);
         return rows[0] ? new User(rows[0]) : null;
     }
 

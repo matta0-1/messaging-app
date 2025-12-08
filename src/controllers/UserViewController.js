@@ -12,12 +12,15 @@ export class UserViewController {
         this.userService = userService;
     }
 
-    _validate(req, res) {
+    _validate(req, res, viewName) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            res.status(400).render(viewName, {
+                error: errors.array()[0].msg,
+            });
+            return true;
         }
-        return null; // no errors
+        return false;
     }
 
     getHomePage = async (req, res, next) => {
@@ -94,7 +97,7 @@ export class UserViewController {
 
     deleteAccount = async (req, res, next) => {
         try {
-            if (this._validate(req, res)) {
+            if (this._validate(req, res, 'about')) {
                 return;
             }
 
@@ -111,4 +114,71 @@ export class UserViewController {
     }
 
 
+    getChangeEmailPage = async (req, res, next) => {
+        try {
+            res.render('users/changeEmail', {
+                error: null,
+            });
+        } catch (error) {
+            // next(error);
+            res.render('users/changeEmail', {
+                error: error.message,
+            });
+        }
+    }
+
+    getChangePasswordPage = async (req, res, next) => {
+        try {
+            res.render('users/changePassword', {
+                error: null,
+            });
+        } catch (error) {
+            // next(error);
+            res.render('users/changePassword', {
+                error: error.message,
+            });
+        }
+    }
+
+    changeEmail = async (req, res, next) => {
+        try {
+            if (this._validate(req, res, 'users/changeEmail')) {
+                return;
+            }
+
+            const ok = await this.userService.updateUserEmail(req.user.id, req.body.email);
+            if (!ok) {
+                return res.render('users/changeEmail', {
+                    error: "Unexpected error",
+                });
+            }
+
+            return res.redirect('/users/about');
+        } catch (error) {
+            res.render('users/changeEmail', {
+                error: error.message,
+            });
+        }
+    }
+
+    changePassword = async (req, res, next) => {
+        try {
+            if (this._validate(req, res, 'users/changePassword')) {
+                return;
+            }
+
+            const ok = await this.userService.updateUserPassword(req.user.id, req.body.oldPassword, req.body.newPassword);
+            if (!ok) {
+                return res.render('users/changePassword', {
+                    error: "Unexpected error",
+                });
+            }
+
+            return res.redirect('/users/about');
+        } catch (error) {
+            res.render('users/changePassword', {
+                error: error.message,
+            });
+        }
+    }
 }

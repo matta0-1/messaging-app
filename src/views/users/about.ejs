@@ -11,10 +11,27 @@
             </h2>
             <h2>Email: <%= user.email %>
             </h2>
+            <div>
+                <form action="/users/change-email" method="GET" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary">
+                        Change email
+                    </button>
+                </form>
+            </div>
+
+            <div>
+                <form action="/users/change-password" method="GET" style="display:inline;">
+                    <button type="submit" class="btn btn-secondary">
+                        Change password
+                    </button>
+                </form>
+            </div>
+
+
             <h2>User since:
-                    <% const sentDate=new Date(user.createdAt); %>
-                        <%= sentDate.toLocaleDateString("en-US", { weekday: "long" , year: "numeric" , month: "long" ,
-                            day: "numeric" }); %>
+                <% const sentDate=new Date(user.createdAt); %>
+                    <%= sentDate.toLocaleDateString("en-US", { weekday: "long" , year: "numeric" , month: "long" ,
+                        day: "numeric" }); %>
             </h2>
         </div>
 
@@ -26,7 +43,8 @@
             </form>
         </div>
         <div>
-            <form action="/users" method="POST" style="display:inline;">
+            <form class="delete-form" messageForConfirm="delete your account (This action cannot be reversed)"
+                action="/users" method="POST" style="display:inline;">
                 <input type="hidden" name="_method" value="DELETE">
                 <button type="submit" class="btn btn-danger">
                     Delete account

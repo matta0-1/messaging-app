@@ -3,6 +3,7 @@
  */
 import { validationResult } from "express-validator";
 import dotenv from 'dotenv';
+import { defaults } from "pg";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ export class AuthController {
             res.status(400).render(viewName, {
                 layout: false,
                 error: errors.array()[0].msg,
+                defaults: req.body,
             });
             return true;
         }
@@ -48,6 +50,7 @@ export class AuthController {
             res.render('login', {
                 layout: false,
                 error: e.message,
+                defaults: req.body,
             });
         }
     }
@@ -73,6 +76,7 @@ export class AuthController {
             res.render('signup', {
                 layout: false,
                 error: e.message,
+                defaults: req.body,
             });
         }
     }
@@ -85,7 +89,8 @@ export class AuthController {
 
             res.render('login', {
                 layout: false,
-                error: null
+                error: null,
+                defaults: null,
             });
         } catch (e) {
             next(e)
@@ -100,6 +105,7 @@ export class AuthController {
             res.render('signup', {
                 layout: false,
                 error: null,
+                defaults: null,
             });
         } catch (e) {
             next(e)

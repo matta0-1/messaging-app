@@ -1,0 +1,21 @@
+<% layout='layout' %>
+    <% title='Change Email' %>
+
+        <div style="text-align: center;">
+            <h1>Change Email</h1>
+
+            <form style="margin-top: 30px;" action="/users/change-email" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="email" name="email" placeholder="Email" style="margin-bottom: 15px;" required>
+
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button type="submit" class="btn btn-primary" style="margin-top: 0;">Change Email</button>
+                </div>
+
+                <% if (typeof error !=='undefined' && error) { %>
+                    <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
+                        <%= error %>
+                    </p>
+                    <% } %>
+            </form>
+        </div>

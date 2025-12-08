@@ -1,6 +1,7 @@
 /**
  * The UserService class contains methods to perform user-related actions
  */
+import bcrypt from "bcrypt";
 
 import { UserDTO } from "../domain/dto/UserDTO.js";
 
@@ -114,6 +115,54 @@ export class UserService {
                 message = error.message;
             }
             throw new Error(`Failed to update user: ${message}`);
+        }
+    }
+
+    /**
+     * Updates email of a user (used in frontend)
+     * @param {int} id 
+     * @param {string} email 
+     * @returns UserDTO if successful, null otherwise
+     */
+    async updateUserEmail(id, email) {
+        try {
+            if (!id || isNaN(id)) {
+                throw new Error('Invalid User id');
+            }
+            if (!email) {
+                throw new Error('Invalid email address');
+            }
+            const user = await this.userRepository.updateEmail(id, email);
+            return user ? UserDTO.fromEntity(user) : null;
+        } catch (error) {
+            throw new Error(`Failed to update user's email address: ${error.message}`);
+        }
+    }
+
+    /**
+     * Updates password of a user (used in frontend)
+     * @param {int} id 
+     * @param {string} email 
+     * @returns UserDTO if successful, null otherwise
+     */
+    async updateUserPassword(id, oldPassword, newPassword) {
+        try {
+            if (!id || isNaN(id)) {
+                throw new Error('Invalid User id');
+            }
+            if (!oldPassword || !newPassword) {
+                throw new Error('Invalid password(s)');
+            }
+            const userOld = await this.userRepository.findByIdGettingPassword(id);
+            const validPassword = await bcrypt.compare(oldPassword, userOld.password);
+            if (!validPassword) {
+                throw new Error("Old password is incorrect");
+            }
+
+            const user = await this.userRepository.updatePassword(id, newPassword);
+            return user ? UserDTO.fromEntity(user) : null;
+        } catch (error) {
+            throw new Error(`Failed to update user's password: ${error.message}`);
         }
     }
 

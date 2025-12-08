@@ -15,3 +15,12 @@ export const upsertUser = [
 export const usernameParam = [
     param('username').isString().isLength({ min: 1, max: 255 }).withMessage('Username must be a string between 1-255 characters'),
 ];
+
+export const updatePassword = [
+    //body('oldPassword').isStrongPassword().withMessage('Weak password'),  // useless, old password must be strong
+    body('newPassword').isStrongPassword().withMessage('Weak password'),
+];
+
+export const updateEmail = [
+    body('email').isEmail().withMessage('Invalid email address'),
+];

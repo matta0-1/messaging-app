@@ -3,7 +3,7 @@ import { UserRepository } from "../domain/repositories/UserRepository.js";
 import { UserService } from "../services/UserService.js";
 import { UserViewController } from "../controllers/UserViewController.js";
 
-import { idParam } from "../validators/userValidators.js";
+import { updatePassword, updateEmail } from "../validators/userValidators.js";
 
 /**
  * Dependency injection
@@ -21,3 +21,10 @@ userViewRoutes.get('/about', controller.getAboutPage);
 userViewRoutes.get('/all', controller.getAllUsersPage);
 
 userViewRoutes.delete('/', controller.deleteAccount);
+
+
+userViewRoutes.get('/change-email', controller.getChangeEmailPage);
+userViewRoutes.get('/change-password', controller.getChangePasswordPage);
+
+userViewRoutes.put('/change-email', updateEmail, controller.changeEmail);
+userViewRoutes.put('/change-password', updatePassword, controller.changePassword);
