@@ -59,4 +59,24 @@ export class MessageViewController {
             next(error);
         }
     }
+
+    editContent = async (req, res, next) => {
+        try {
+            if (this._validate(req, res)) {
+                return;
+            }
+
+            // req.params.id is the message id
+            // req.body contains content
+            const data = await this.messageService.editMessage(req.params.id, req.body);
+            if (!data) {
+                console.log("ERRORRRRR")
+                return res.status(404).json({ message: "Not found" });
+            }
+            // NOT req.params.id, we need to get the other user's id
+            return res.redirect(`/messages/${req.body.user2Id}`);
+        } catch (error) {
+            next(error);
+        }
+    }
 }

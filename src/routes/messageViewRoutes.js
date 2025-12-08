@@ -21,6 +21,7 @@ const controller = new MessageViewController(service, new UserService(new UserRe
 
 export const messageViewRoutes = Router();
 
-messageViewRoutes.get('/:id', idParam, controller.getConversationPage);
-messageViewRoutes.post('/:id', idParam, controller.sendMessage);
+messageViewRoutes.get('/:id', idParam, controller.getConversationPage); // id: user2ID
+messageViewRoutes.post('/:id', idParam, controller.sendMessage); // id: user2ID
 
+messageViewRoutes.put('/:id', idParam, controller.editContent); // id: message id

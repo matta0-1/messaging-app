@@ -11,13 +11,16 @@
             </h2>
             <h2>Email: <%= user.email %>
             </h2>
-            <h2>User since: <%= user.createdAt %>
+            <h2>User since:
+                    <% const sentDate=new Date(user.createdAt); %>
+                        <%= sentDate.toLocaleDateString("en-US", { weekday: "long" , year: "numeric" , month: "long" ,
+                            day: "numeric" }); %>
             </h2>
         </div>
 
         <div>
             <form action="/auth/logout" method="POST" style="display:inline;">
-                <button type="submit" class="btn btn-danger">
+                <button type="submit" class="btn btn-secondary">
                     Log out
                 </button>
             </form>

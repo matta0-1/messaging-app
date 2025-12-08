@@ -123,5 +123,5 @@ INSERT INTO public.messages (content, sender_id, receiver_id, sent_at) VALUES
 ('aloooo??', 3, 2, '2025-10-29 14:05:32.980898+02'),
 ('where are you???', 3, 2, '2025-10-29 14:05:54.128405+02'),
 ('suiiiiiiiii', 1, 2, '2025-10-29 14:04:28.564591+02'),
-('', 3, 1, '2024-10-29 14:04:28.564591+02')
+('Good morning, sir', 3, 1, '2024-10-29 14:04:28.564591+02')
 ON CONFLICT DO NOTHING;

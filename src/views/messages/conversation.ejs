@@ -6,20 +6,53 @@
 
         <% if (messages && messages.length> 0) { %>
             <div class="chat-container">
-                <% messages.forEach(message=> { %>
-                    <div class="message <%= message.senderId === user1Id ? 'me' : 'other' %>">
+                <% messages.forEach(message=> {
+                    if (message.senderId === user1Id) {%>
+
+                    <div class="message me">
                         <div class="message-content">
                             <%= message.content %>
                         </div>
                         <div class="message-footer">
                             <small>
                                 <% const sentDate=new Date(message.sentAt); %>
-                                    <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
+                                    SENT AT <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
                                         ,day: '2-digit' , month: 'short' }) %>
                             </small>
+                            <% if (message.editedAt !==null) { %>
+                                <small>
+                                    EDITED AT <% const editedDate=new Date(message.editedAt); %>
+                                        <%= editedDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
+                                            ,day: '2-digit' , month: 'short' }) %>
+                                </small>
+                                <%}%>
+                                    <button type="button" class="edit-btn"
+                                        onclick="openEditPopup('<%= message.id %>', `<%- message.content %>`)">Edit</button>
                         </div>
                     </div>
-                    <% }) %>
+
+                    <% } else { %>
+
+                        <div class="message other">
+                            <div class="message-content">
+                                <%= message.content %>
+                            </div>
+                            <div class="message-footer">
+                                <small>
+                                    <% const sentDate=new Date(message.sentAt); %>
+                                        SENT AT <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
+                                            ,day: '2-digit' , month: 'short' }) %>
+                                </small>
+                                <% if (message.editedAt !==null) { %>
+                                    <small>
+                                        EDITED AT <% const editedDate=new Date(message.editedAt); %>
+                                            <%= editedDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
+                                                ,day: '2-digit' , month: 'short' }) %>
+                                    </small>
+                                    <%}%>
+                            </div>
+                        </div>
+                        <% }}) %>
             </div>
             <%} else { %>
                 <div>
@@ -33,3 +66,37 @@
                         <input type="text" name="content" placeholder="Send a message" required autocomplete="off" />
                         <button type="submit">Send</button>
                     </form>
+
+
+                    <!-- Edit Message Popup -->
+                    <div id="editPopup" class="popup-overlay">
+                        <div class="popup-box">
+                            <h4>Edit Message</h4>
+                            <form id="editMessageForm" method="POST">
+                                <input type="hidden" name="user2Id" value="<%= user2.id %>">
+                                <textarea id="editMessageInput" name="content" required></textarea>
+                                <div class="popup-buttons">
+                                    <button type="submit">Save</button>
+                                    <button type="button" onclick="closeEditPopup()">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Open and close Popup -->
+                    <script>
+                        function openEditPopup(messageId, content) {
+                            const popup = document.getElementById("editPopup");
+                            const input = document.getElementById("editMessageInput");
+                            const form = document.getElementById("editMessageForm");
+
+                            input.value = content; // Fill current message
+                            form.action = `/messages/${messageId}?_method=PUT`; // Update route
+
+                            popup.style.display = "flex";
+                        }
+
+                        function closeEditPopup() {
+                            document.getElementById("editPopup").style.display = "none";
+                        }
+                    </script>
