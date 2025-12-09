@@ -1,102 +1,93 @@
 <% layout='layout' %>
     <% title='Conversation' %>
 
-        <p>Conversation with <%= user2.username %>
-        </p>
+        <div class="d-flex flex-column" style="max-width: 700px; margin: auto; height: 80vh;">
 
-        <% if (messages && messages.length> 0) { %>
-            <div class="chat-container">
-                <% messages.forEach(message=> {
-                    if (message.senderId === user1Id) {%>
+            <h4 class="text-center mb-3">Chat with <%= user2.username %>
+            </h4>
 
-                    <div class="message me">
-                        <div class="message-content">
-                            <%= message.content %>
-                        </div>
-                        <div class="message-footer">
-                            <small>
-                                <% const sentDate=new Date(message.sentAt); %>
-                                    SENT AT <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
-                                        ,day: '2-digit' , month: 'short' }) %>
-                            </small>
-                            <% if (message.editedAt !==null) { %>
-                                <small>
-                                    EDITED AT <% const editedDate=new Date(message.editedAt); %>
-                                        <%= editedDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
-                                            ,day: '2-digit' , month: 'short' }) %>
-                                </small>
-                                <%}%>
-                                    <button type="button" class="edit-btn"
-                                        onclick="openEditPopup('<%= message.id %>', `<%- message.content %>`)">Edit</button>
-                        </div>
-                    </div>
+            <!-- Chat Messages -->
+            <div id="chatBox" class="flex-grow-1 p-3 bg-white rounded shadow-sm overflow-auto">
+                <% if (messages && messages.length> 0) { %>
+                    <% messages.forEach(message=> { %>
 
-                    <% } else { %>
+                        <% const isMe=message.senderId===user1Id; %>
+                            <div class="d-flex <%= isMe ? 'justify-content-end' : 'justify-content-start' %> mb-2">
+                                <div class="<%= isMe ? 'bg-primary text-white' : 'bg-light' %> p-2 rounded-4"
+                                    style="max-width: 70%;">
 
-                        <div class="message other">
-                            <div class="message-content">
-                                <%= message.content %>
-                            </div>
-                            <div class="message-footer">
-                                <small>
-                                    <% const sentDate=new Date(message.sentAt); %>
-                                        SENT AT <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
-                                            ,day: '2-digit' , month: 'short' }) %>
-                                </small>
-                                <% if (message.editedAt !==null) { %>
-                                    <small>
-                                        EDITED AT <% const editedDate=new Date(message.editedAt); %>
-                                            <%= editedDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit'
-                                                ,day: '2-digit' , month: 'short' }) %>
-                                    </small>
-                                    <%}%>
-                            </div>
-                        </div>
-                        <% }}) %>
-            </div>
-            <%} else { %>
-                <div>
-                    <p>Start the Conversation!!</p>
-                </div>
-                <% } %>
+                                    <div>
+                                        <%= message.content %>
+                                    </div>
 
+                                    <div class="small text-end mt-1" style="opacity: 0.8; font-size: 0.75rem;">
+                                        <% const sentDate=new Date(message.sentAt); %>
+                                            <%= sentDate.toLocaleTimeString([], { hour: '2-digit' , minute: '2-digit' ,
+                                                day: '2-digit' , month: 'short' }) %>
 
-                    <!-- Message input form -->
-                    <form action="/messages/<%=user2.id%>" method="POST" class="message-form">
-                        <input type="text" name="content" placeholder="Send a message" required autocomplete="off" />
-                        <button type="submit">Send</button>
-                    </form>
+                                                <% if (message.editedAt !==null) { %>
+                                                    <span>(edited)</span>
+                                                    <% } %>
+                                    </div>
 
+                                    <% if (isMe) { %>
+                                        <button type="button" class="btn btn-sm btn-outline-light mt-1 py-0 px-1"
+                                            style="font-size: 0.65rem;"
+                                            onclick="openEditPopup('<%= message.id %>', `<%- message.content %>`)">
+                                            Edit
+                                        </button>
+                                        <% } %>
 
-                    <!-- Edit Message Popup -->
-                    <div id="editPopup" class="popup-overlay">
-                        <div class="popup-box">
-                            <h4>Edit Message</h4>
-                            <form id="editMessageForm" method="POST">
-                                <input type="hidden" name="user2Id" value="<%= user2.id %>">
-                                <textarea id="editMessageInput" name="content" required></textarea>
-                                <div class="popup-buttons">
-                                    <button type="submit">Save</button>
-                                    <button type="button" onclick="closeEditPopup()">Cancel</button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <p class="text-center text-secondary mt-5">Start the Conversation 🎉</p>
+                                    <% } %>
+            </div>
+
+            <!-- Message Input -->
+            <form action="/messages/<%= user2.id %>" method="POST" class="input-group mt-3">
+                <input type="text" name="content" class="form-control rounded-pill" placeholder="Type a message..."
+                    required autocomplete="off">
+                <button class="btn btn-primary rounded-pill ms-2 px-4">Send</button>
+            </form>
+
+        </div>
+
+        <!-- Edit Popup -->
+        <div id="editPopup" class="position-fixed top-0 start-0 w-100 h-100 d-none
+    row justify-content-center align-items-center" style="background: rgba(0,0,0,0.4);">
+
+            <div class="bg-white rounded shadow p-3" style="width: 280px;">
+                <h5>Edit Message</h5>
+                <form id="editMessageForm" method="POST">
+                    <input type="hidden" name="user2Id" value="<%= user2.id %>">
+                    <textarea id="editMessageInput" name="content" class="form-control" style="height: 80px;"
+                        required></textarea>
+
+                    <div class="d-flex justify-content-end gap-2 mt-3">
+                        <button class="btn btn-primary btn-sm">Save</button>
+                        <button type="button" class="btn btn-secondary btn-sm"
+                            onclick="closeEditPopup()">Cancel</button>
                     </div>
+                </form>
+            </div>
+        </div>
 
-                    <!-- Open and close Popup -->
-                    <script>
-                        function openEditPopup(messageId, content) {
-                            const popup = document.getElementById("editPopup");
-                            const input = document.getElementById("editMessageInput");
-                            const form = document.getElementById("editMessageForm");
+        <script>
+            // Auto scroll to bottom when new messages appear
+            const chatBox = document.getElementById("chatBox");
+            chatBox.scrollTop = chatBox.scrollHeight;
 
-                            input.value = content; // Fill current message
-                            form.action = `/messages/${messageId}?_method=PUT`; // Update route
+            function openEditPopup(id, content) {
+                document.getElementById("editPopup").classList.remove("d-none");
+                const input = document.getElementById("editMessageInput");
+                input.value = content;
+                document.getElementById("editMessageForm").action = `/messages/${id}?_method=PUT`;
+            }
 
-                            popup.style.display = "flex";
-                        }
-
-                        function closeEditPopup() {
-                            document.getElementById("editPopup").style.display = "none";
-                        }
-                    </script>
+            function closeEditPopup() {
+                document.getElementById("editPopup").classList.add("d-none");
+            }
+        </script>

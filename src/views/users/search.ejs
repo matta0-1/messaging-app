@@ -1,36 +1,37 @@
 <% layout='layout' %>
     <% title='Search' %>
 
-        <div style="text-align: center;">
-            <h2>Enter username to search</h2>
-            <form style="margin-top: 30px;" action="/users/search" method="POST">
-                <input type="text" name="username" placeholder="Username" style="margin-bottom: 15px;" required>
+        <div class="container text-center mt-4" style="max-width: 420px;">
+            <h2 class="mb-4">Enter username to search</h2>
 
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button type="submit" class="btn btn-primary" style="margin-top: 0;">Seach</button>
-
+            <% if (typeof error !=='undefined' && error) { %>
+                <div class="alert alert-danger text-center">
+                    <%= error %>
                 </div>
+                <% } %>
+                    <form action="/users/search" method="POST">
+                        <input type="text" name="username" placeholder="Username" required
+                            class="form-control form-control-lg rounded-pill mb-3">
 
-                <% if (typeof error !=='undefined' && error) { %>
-                    <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
-                        <%= error %>
-                    </p>
-                    <% } %>
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill w-100">Seach</button>
 
-
-            </form>
         </div>
 
-        <% if (user) { %>
-            <div>
-                <%= user.username %>
-                    (<%= user.firstName %>
-                        <%= user.lastName %>)
+        </form>
 
-            </div>
-            <div>
+        <% if (user) { %>
+            <div class="container text-center mt-4" style="max-width: 420px;">
+                <p>
+                    User:
+                    <b>
+                        <%= user.username %>
+                            (<%= user.firstName %>
+                                <%= user.lastName %>)
+                    </b>
+                </p>
+
                 <% if (!friendState) { %>
-                    ADD as friend!
+                    <p>Status: <b>Not Friends</b></p>
                     <form action="/friends/<%= user.id %>" method="POST" style="display:inline;">
                         <input type="hidden" name="redirect" value="search">
                         <button type="submit" class="btn btn-primary">Send Friend Request</button>
@@ -38,7 +39,7 @@
 
 
                     <% } else if (friendState==='a' ) { %>
-                        You are already friends!
+                        <p>Status: <b>Friends</b></p>
 
                         <td><a href="/messages/<%= user.id%>" class="btn btn-primary">Chat</a></td>
 
@@ -64,7 +65,7 @@
 
 
                         <% } else if (friendState==='p' ) { %>
-                            You are pending friends!
+                            <p>Status: <b>Friend Request Pending</b></p>
 
                             <td>
                                 <form action="/friends/accept/<%= user.id %>" method="POST" style="display:inline;">
@@ -96,7 +97,7 @@
 
 
                             <% } else if (friendState==='b' ) { %>
-                                You are blockeddd friends!
+                                <p>Status: <b>Friend Request Blocked</b></p>
 
                                 <td>
                                     <form action="/friends/accept/<%= user.id %>" method="POST" style="display:inline;">

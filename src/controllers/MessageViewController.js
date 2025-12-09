@@ -70,7 +70,6 @@ export class MessageViewController {
             // req.body contains content
             const data = await this.messageService.editMessage(req.params.id, req.body);
             if (!data) {
-                console.log("ERRORRRRR")
                 return res.status(404).json({ message: "Not found" });
             }
             // NOT req.params.id, we need to get the other user's id

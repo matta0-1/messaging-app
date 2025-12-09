@@ -1,24 +1,33 @@
-<title>Messaging Site - Login </title>
+<head>
+    <title>Messaging Site - Login </title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
 
-<div style="text-align: center;">
-    <h1>Welcome to Web Messenger</h1>
-    <h2>Login</h2>
-    <form style="margin-top: 30px;" action="/auth/login" method="POST">
-        <input type="text" value="<%= defaults ? defaults.username : '' %>" name="username" placeholder="Username"
-            style="margin-bottom: 15px;" required>
-        <input type="password" value="<%= defaults ? defaults.password : '' %>" name="password" placeholder="Password"
-            style="margin-bottom: 20px;" required>
-
-        <div style="display: flex; gap: 15px; justify-content: center;">
-            <button type="submit" class="btn" style="margin-top: 0;">Login</button>
-            <button type="button" class="btn" onclick="window.location.href='/auth/signup'" style="margin-top: 0;">
-                Go to Sign up</button>
-        </div>
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-sm p-4" style="max-width: 420px; width: 100%;">
+        <h2 class="text-center mb-4">Login</h2>
 
         <% if (typeof error !=='undefined' && error) { %>
-            <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
+            <div class="alert alert-danger text-center">
                 <%= error %>
-            </p>
+            </div>
             <% } %>
-    </form>
+
+                <form action="/auth/login" method="POST">
+                    <div class="mb-3">
+                        <input type="text" name="username" value="<%= defaults ? defaults.username : '' %>"
+                            class="form-control form-control-lg rounded-pill" placeholder="Username" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <input type="password" name="password" value="<%= defaults ? defaults.password : '' %>"
+                            class="form-control form-control-lg rounded-pill" placeholder="Password" required>
+                    </div>
+
+                    <button class="btn btn-primary btn-lg rounded-pill w-100 mb-3">Login</button>
+                    <a href="/auth/signup" class="btn btn-outline-secondary rounded-pill btn-lg w-100">Create
+                        Account</a>
+                </form>
+    </div>
 </div>

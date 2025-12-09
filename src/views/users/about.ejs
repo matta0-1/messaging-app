@@ -1,5 +1,6 @@
 <% layout='layout' %>
     <% title='About' %>
+
         <% if (notification) { %>
             <div id="notificationAlert" class="alert alert-success alert-dismissible fade show" role="alert"
                 style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%);">
@@ -8,60 +9,48 @@
             </div>
             <% } %>
 
-                <div>
-                    <h1>Your personal info:</h1>
 
-                    <h2>Username: <%= user.username %>
-                    </h2>
-                    <h2>First name: <%= user.firstName %>
-                    </h2>
-                    <h2>Last name: <%= user.lastName %>
-                    </h2>
-                    <h2>Email: <%= user.email %>
-                    </h2>
-                    <div>
-                        <form action="/users/change-email" method="GET" style="display:inline;">
-                            <button type="submit" class="btn btn-secondary">
-                                Change email
-                            </button>
+                <div class="container mt-4">
+
+                    <h1 class="text-center mb-4">Your Profile</h1>
+
+                    <ul class="list-group mb-4">
+                        <li class="list-group-item"><strong>Username:</strong>
+                            <%= user.username %>
+                        </li>
+                        <li class="list-group-item"><strong>First Name:</strong>
+                            <%= user.firstName %>
+                        </li>
+                        <li class="list-group-item"><strong>Last name:</strong>
+                            <%= user.lastName %>
+                        </li>
+                        <li class="list-group-item"><strong>Email:</strong>
+                            <%= user.email %>
+                        </li>
+                        <li class="list-group-item"><strong>User since:</strong>
+                            <%= new Date(user.createdAt).toLocaleDateString("en-US", { weekday: "long" , year: "numeric"
+                                , month: "long" , day: "numeric" }); %>
+                        </li>
+
+                    </ul>
+                    <div class="d-flex flex-column gap-2">
+                        <a href="/users/change-email" class="btn btn-secondary w-100">Change Email</a>
+                        <a href="/users/change-password" class="btn btn-secondary w-100">Change Password</a>
+                        <form action="/auth/logout" method="POST" class="mt-2">
+                            <button type="submit" class="btn btn-warning w-100">Log Out</button>
+                        </form>
+
+                        <form action="/users" method="POST" class="delete-form mt-2"
+                            messageForConfirm="delete your account (This action cannot be reversed and will permanently delete all your conversations)">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger w-100">Delete Account</button>
                         </form>
                     </div>
 
-                    <div>
-                        <form action="/users/change-password" method="GET" style="display:inline;">
-                            <button type="submit" class="btn btn-secondary">
-                                Change password
-                            </button>
-                        </form>
-                    </div>
-
-
-                    <h2>User since:
-                        <% const sentDate=new Date(user.createdAt); %>
-                            <%= sentDate.toLocaleDateString("en-US", { weekday: "long" , year: "numeric" , month: "long"
-                                , day: "numeric" }); %>
-                    </h2>
-                </div>
-
-                <div>
-                    <form action="/auth/logout" method="POST" style="display:inline;">
-                        <button type="submit" class="btn btn-secondary">
-                            Log out
-                        </button>
-                    </form>
-                </div>
-                <div>
-                    <form class="delete-form"
-                        messageForConfirm="delete your account (This action cannot be reversed and will permanently delete all your conversations)"
-                        action="/users" method="POST" style="display:inline;">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit" class="btn btn-danger">
-                            Delete account
-                        </button>
-                    </form>
                 </div>
 
                 <script>
+                    // to display message for a few seconds on email and password change
                     document.addEventListener("DOMContentLoaded", function () {
                         const alert = document.getElementById("notificationAlert");
                         if (alert) {

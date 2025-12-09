@@ -1,21 +1,25 @@
 <% layout='layout' %>
     <% title='Change Email' %>
 
-        <div style="text-align: center;">
-            <h1>Change Email</h1>
+        <div class="d-flex justify-content-center mt-5">
+            <div class="card shadow-sm p-4" style="max-width: 420px; width: 100%;">
+                <h3 class="text-center mb-4">Change Email</h3>
 
-            <form style="margin-top: 30px;" action="/users/change-email" method="POST">
-                <input type="hidden" name="_method" value="PUT">
-                <input type="email" name="email" placeholder="Email" style="margin-bottom: 15px;" required>
-
-                <div style="display: flex; gap: 15px; justify-content: center;">
-                    <button type="submit" class="btn btn-primary" style="margin-top: 0;">Change Email</button>
-                </div>
-
-                <% if (typeof error !=='undefined' && error) { %>
-                    <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
+                <% if (error) { %>
+                    <div class="alert alert-danger text-center mb-3">
                         <%= error %>
-                    </p>
+                    </div>
                     <% } %>
-            </form>
+
+                        <form action="/users/change-email" method="POST">
+                            <input type="hidden" name="_method" value="PUT">
+
+                            <div class="mb-4">
+                                <input type="email" name="email" class="form-control form-control-lg rounded-pill"
+                                    placeholder="New Email" required>
+                            </div>
+
+                            <button class="btn btn-primary btn-lg rounded-pill w-100">Update Email</button>
+                        </form>
+            </div>
         </div>

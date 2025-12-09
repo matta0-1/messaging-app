@@ -56,6 +56,10 @@ export class UserViewController {
         try {
             const user = await this.userService.getUserById(req.user.id);
 
+            // const notification = req.session.notification;
+            // req.session.notification = null;
+    
+            // console.log(req.session)
             res.render('users/about', {
                 user: user,
                 notification: null,
@@ -162,6 +166,10 @@ export class UserViewController {
                 user: user,
                 notification: "Email changed successfully",
             });
+
+            // req.session.notification = "Email changed successfully"
+            // res.redirect('users/about');
+
         } catch (error) {
             res.render('users/changeEmail', {
                 error: error.message,

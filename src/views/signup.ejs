@@ -1,5 +1,10 @@
-<title>Messaging Site - Sign Up </title>
+<head>
+    <title>Messaging Site - Sign Up</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
 
+<!-- Old ui
 <div style="text-align: center;">
     <h1>Welcome to Web Messenger</h1>
     <h2>Register</h2>
@@ -15,7 +20,7 @@
             style="margin-bottom: 15px;" required>
         <input type="password" id="password" value="<%= defaults ? defaults.password : '' %>" name="password"
             placeholder="Password" style="margin-bottom: 20px;" required>
-        <!-- Do not refill confirmation field. Let user retype it -->
+        NOTE: Do not refill confirmation field. Let user retype it
         <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
             style="margin-bottom: 20px;" required>
 
@@ -32,6 +37,93 @@
             <% } %>
 
     </form>
+</div> -->
+
+<div class="d-flex justify-content-center mt-5">
+    <div class="card shadow-sm p-4" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Create Account</h2>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="alert alert-danger text-center"><%= error %></div>
+        <% } %>
+
+        <form id="signupForm" action="/auth/signup" method="POST">
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <input
+                        type="text"
+                        name="firstName"
+                        value="<%= defaults ? defaults.firstName : '' %>"
+                        class="form-control form-control-lg rounded-pill"
+                        placeholder="First Name"
+                        required
+                    >
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <input
+                        type="text"
+                        name="lastName"
+                        value="<%= defaults ? defaults.lastName : '' %>"
+                        class="form-control form-control-lg rounded-pill"
+                        placeholder="Last Name"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input
+                    type="text"
+                    name="username"
+                    value="<%= defaults ? defaults.username : '' %>"
+                    class="form-control form-control-lg rounded-pill"
+                    placeholder="Username"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <input
+                    type="email"
+                    name="email"
+                    value="<%= defaults ? defaults.email : '' %>"
+                    class="form-control form-control-lg rounded-pill"
+                    placeholder="Email"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    value="<%= defaults ? defaults.password : '' %>"
+                    class="form-control form-control-lg rounded-pill"
+                    placeholder="Password"
+                    required
+                >
+            </div>
+
+            <div class="mb-4">
+                <!-- Not autofilled on purpose -->
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    class="form-control form-control-lg rounded-pill"
+                    placeholder="Confirm Password"
+                    required
+                >
+            </div>
+
+            <button class="btn btn-primary btn-lg rounded-pill w-100 mb-3">Sign Up</button>
+            <a href="/auth/login" class="btn btn-outline-secondary rounded-pill btn-lg w-100">Already have an account?</a>
+
+        </form>
+    </div>
 </div>
 
 <script>

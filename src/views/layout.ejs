@@ -93,15 +93,40 @@
 
 </head>
 
-<body>
+<!-- <body>
     <div class="d-flex justify-content-center gap-2 p-2">
         <a href="/users/home" class="btn btn-primary">Home</a>
         <a href="/users/friends" class="btn btn-primary">Friends</a>
         <a href="/users/about" class="btn btn-primary">About</a>
+    </div>
+    <%- //body %>
+</body> -->
 
+<!-- <body class="bg-light">
+
+    <div class="d-flex justify-content-center gap-3 mt-3 mb-4">
+        <a href="/users/home" class="btn btn-primary btn-lg rounded-pill px-4">Home</a>
+        <a href="/users/friends" class="btn btn-primary btn-lg rounded-pill px-4">Friends</a>
+        <a href="/users/about" class="btn btn-primary btn-lg rounded-pill px-4">About</a>
     </div>
 
-    <%- body %>
+    <div class="container pb-5" >
+        <%- //body %>
+    </div>
+
+</body> -->
+
+<body class="bg-light">
+
+    <div class="d-flex justify-content-center gap-3 mt-3 mb-4">
+        <a href="/users/home" class="btn btn-lg rounded-pill px-4 <%= title === "Home" ? "btn-dark" : "btn-primary" %>">Home</a>
+        <a href="/users/friends" class="btn btn-lg rounded-pill px-4 <%= title === "Friends" ? "btn-dark" : "btn-primary" %>">Friends</a>
+        <a href="/users/about" class="btn btn-lg rounded-pill px-4 <%= title === "About" ? "btn-dark" : "btn-primary" %>">About</a>
+    </div>
+
+    <div class="container my-4" >
+        <%- body %>
+    </div>
 
 </body>
 

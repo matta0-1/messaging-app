@@ -80,7 +80,6 @@ export class FriendViewController {
 
             const data = { user1Id: req.user.id, user2Id: req.params.id };
             await this.friendService.createFriend(data); // no need the return value
-            console.log();
             return res.redirect(`/users/${req.body.redirect}`); // keep user on the same page
         } catch (e) {
             next(e);

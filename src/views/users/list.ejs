@@ -6,12 +6,12 @@
             <p>
                 <% if (users && users.length> 0) { %>
                     <h2>All users:</h2>
-                    <table>
-                        <thead>
+                    <table class="table table-striped table-hover align-middle mt-3">
+                        <thead class="table-primary">
                             <tr>
                                 <th>Username</th>
                                 <th>Real Name</th>
-                                <!-- <th>Send Friend Request</th> -->
+                                <th>Action</th>
                             </tr>
                         </thead>
 
@@ -38,6 +38,6 @@
                     </table>
                     <%} else { %>
                         <h2>Looks like you're friends with everyone!!</h2>
-                        <h6>... or you're blocked by everyone :)</h6>
+                        <!-- <h6>... or you're blocked by everyone :)</h6> -->
                         <%}%>
             </p>
