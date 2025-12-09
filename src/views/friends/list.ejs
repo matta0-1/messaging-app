@@ -20,14 +20,17 @@
                                     <form action="/friends/block/<%= friend.id %>" method="POST"
                                         style="display:inline;">
                                         <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="redirect" value="friends">
                                         <button type="submit" class="btn btn-warning"> Block </button>
                                     </form>
                                 </td>
 
                                 <td>
-                                    <form class="delete-form" messageForConfirm="remove <%= friend.username %> from your friend list" action="/friends/delete/<%= friend.id%>" method="POST"
-                                        style="display:inline;">
+                                    <form class="delete-form"
+                                        messageForConfirm="remove <%= friend.username %> from your friend list"
+                                        action="/friends/delete/<%= friend.id%>" method="POST" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="redirect" value="friends">
                                         <button type="submit" class="btn btn-danger">
                                             Delete
                                         </button>
@@ -57,6 +60,7 @@
                                     <form action="/friends/accept/<%= friend.id %>" method="POST"
                                         style="display:inline;">
                                         <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="redirect" value="friends">
                                         <button type="submit" class="btn btn-primary"> Accept </button>
                                     </form>
                                 </td>
@@ -65,14 +69,17 @@
                                     <form action="/friends/block/<%= friend.id %>" method="POST"
                                         style="display:inline;">
                                         <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="redirect" value="friends">
                                         <button type="submit" class="btn btn-warning"> Block </button>
                                     </form>
                                 </td>
 
                                 <td>
-                                    <form class="delete-form" messageForConfirm="remove <%= friend.username %> from your friend list" action="/friends/delete/<%= friend.id%>" method="POST"
-                                        style="display:inline;">
+                                    <form class="delete-form"
+                                        messageForConfirm="remove <%= friend.username %> from your friend list"
+                                        action="/friends/delete/<%= friend.id%>" method="POST" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="redirect" value="friends">
                                         <button type="submit" class="btn btn-danger">
                                             Delete
                                         </button>
@@ -100,17 +107,18 @@
                                     <form action="/friends/accept/<%= friend.id %>" method="POST"
                                         style="display:inline;">
                                         <input type="hidden" name="_method" value="PUT">
-                                        <button type="submit" class="btn btn-primary"> Accept </button>
+                                        <input type="hidden" name="redirect" value="friends">
+                                        <button type="submit" class="btn btn-primary">Unblock</button>
                                     </form>
                                 </td>
 
                                 <td>
-                                    <form class="delete-form" messageForConfirm="remove <%= friend.username %> from your friend list" action="/friends/delete/<%= friend.id%>" method="POST"
-                                        style="display:inline;">
+                                    <form class="delete-form"
+                                        messageForConfirm="remove <%= friend.username %> from your friend list"
+                                        action="/friends/delete/<%= friend.id%>" method="POST" style="display:inline;">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <button type="submit" class="btn btn-danger">
-                                            Delete
-                                        </button>
+                                        <input type="hidden" name="redirect" value="friends">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -124,5 +132,6 @@
 
         <div>
             <h3>Find new Friends!</h3>
-            <a href="/users/all" class="btn btn-primary">Search</a>
+            <a href="/users/all" class="btn btn-primary">See all users</a>
+            <a href="/users/search" class="btn btn-primary">Search</a>
         </div>

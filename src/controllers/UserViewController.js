@@ -8,8 +8,9 @@ export class UserViewController {
      * Constructs a UserController object
      * @param {UserService} userService 
      */
-    constructor(userService) {
+    constructor(userService, friendService) {
         this.userService = userService;
+        this.friendService = friendService; // to check friend state between 2 users in search
     }
 
     _validate(req, res, viewName) {
@@ -57,6 +58,7 @@ export class UserViewController {
 
             res.render('users/about', {
                 user: user,
+                notification: null,
             });
         } catch (error) {
             next(error);
@@ -153,7 +155,13 @@ export class UserViewController {
                 });
             }
 
-            return res.redirect('/users/about');
+            // Go back to about page with success message
+            const user = await this.userService.getUserById(req.user.id);
+
+            res.render('users/about', {
+                user: user,
+                notification: "Email changed successfully",
+            });
         } catch (error) {
             res.render('users/changeEmail', {
                 error: error.message,
@@ -174,9 +182,75 @@ export class UserViewController {
                 });
             }
 
-            return res.redirect('/users/about');
+            // Go back to about page with success message
+            const user = await this.userService.getUserById(req.user.id);
+
+            res.render('users/about', {
+                user: user,
+                notification: "Password changed successfully",
+            });
         } catch (error) {
             res.render('users/changePassword', {
+                error: error.message,
+            });
+        }
+    }
+
+    getSearchPage = async (req, res, next) => {
+        try {
+            res.render('users/search', {
+                user: null,
+                error: null,
+            });
+        } catch (error) {
+            // next(error);
+            res.render('users/search', {
+                user: null,
+                error: error.message,
+            });
+        }
+    }
+
+    searchForUser = async (req, res, next) => {
+        try {
+            if (this._validate(req, res, 'users/search')) {
+                return;
+            }
+
+            const user = await this.userService.getUserByUsername(req.body.username);
+            if (!user) {
+                return res.render('users/search', {
+                    user: user,
+                    error: `Could not find ${req.body.username}`,
+                });
+            }
+
+            if (user.id === req.user.id) {
+                return res.render('users/search', {
+                    user: null,
+                    error: "That's you!",
+                });
+            }
+            // Check current friendship status to display appropriate options (blocked, accepted, pending, or not a friend)
+            const friendRow = await this.friendService.findFriendIdByUserIds(user.id, req.user.id);
+
+            if (friendRow == null) { // no friend request
+                res.render('users/search', {
+                    user: user,
+                    error: null,
+                    friendState: null
+                });
+            }
+            else {
+                res.render('users/search', {
+                    user: user,
+                    error: null,
+                    friendState: friendRow.state,
+                });
+            }
+        } catch (error) {
+            res.render('users/search', {
+                user: null,
                 error: error.message,
             });
         }

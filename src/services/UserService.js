@@ -135,7 +135,7 @@ export class UserService {
             const user = await this.userRepository.updateEmail(id, email);
             return user ? UserDTO.fromEntity(user) : null;
         } catch (error) {
-            throw new Error(`Failed to update user's email address: ${error.message}`);
+            throw new Error(`Failed to update email address: ${error.message}`);
         }
     }
 
@@ -162,7 +162,7 @@ export class UserService {
             const user = await this.userRepository.updatePassword(id, newPassword);
             return user ? UserDTO.fromEntity(user) : null;
         } catch (error) {
-            throw new Error(`Failed to update user's password: ${error.message}`);
+            throw new Error(`Failed to update password: ${error.message}`);
         }
     }
 

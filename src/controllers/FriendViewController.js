@@ -31,7 +31,7 @@ export class FriendViewController {
                 return res.status(404).json({ message: 'Not found' });
             }
 
-            return res.redirect('/users/friends');
+            return res.redirect(`/users/${req.body.redirect}`);
 
         } catch (e) {
             next(e);
@@ -48,7 +48,7 @@ export class FriendViewController {
             if (!data) {
                 return res.status(404).json({ message: 'No data found' });
             }
-            return res.redirect('/users/friends');
+            return res.redirect(`/users/${req.body.redirect}`);
         } catch (e) {
             next(e);
         }
@@ -65,7 +65,7 @@ export class FriendViewController {
                 return res.status(404).json({ message: 'No data found' });
             }
 
-            return res.redirect('/users/friends');
+            return res.redirect(`/users/${req.body.redirect}`);
         } catch (e) {
             next(e);
         }
@@ -80,7 +80,8 @@ export class FriendViewController {
 
             const data = { user1Id: req.user.id, user2Id: req.params.id };
             await this.friendService.createFriend(data); // no need the return value
-            return res.redirect('/users/all'); // keep user on the same page
+            console.log();
+            return res.redirect(`/users/${req.body.redirect}`); // keep user on the same page
         } catch (e) {
             next(e);
         }

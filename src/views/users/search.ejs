@@ -1,0 +1,124 @@
+<% layout='layout' %>
+    <% title='Search' %>
+
+        <div style="text-align: center;">
+            <h2>Enter username to search</h2>
+            <form style="margin-top: 30px;" action="/users/search" method="POST">
+                <input type="text" name="username" placeholder="Username" style="margin-bottom: 15px;" required>
+
+                <div style="display: flex; gap: 15px; justify-content: center;">
+                    <button type="submit" class="btn btn-primary" style="margin-top: 0;">Seach</button>
+
+                </div>
+
+                <% if (typeof error !=='undefined' && error) { %>
+                    <p style="color: #ff4444; margin-top: 20px; font-size: 0.95rem;">
+                        <%= error %>
+                    </p>
+                    <% } %>
+
+
+            </form>
+        </div>
+
+        <% if (user) { %>
+            <div>
+                <%= user.username %>
+                    (<%= user.firstName %>
+                        <%= user.lastName %>)
+
+            </div>
+            <div>
+                <% if (!friendState) { %>
+                    ADD as friend!
+                    <form action="/friends/<%= user.id %>" method="POST" style="display:inline;">
+                        <input type="hidden" name="redirect" value="search">
+                        <button type="submit" class="btn btn-primary">Send Friend Request</button>
+                    </form>
+
+
+                    <% } else if (friendState==='a' ) { %>
+                        You are already friends!
+
+                        <td><a href="/messages/<%= user.id%>" class="btn btn-primary">Chat</a></td>
+
+                        <td>
+                            <form action="/friends/block/<%= user.id %>" method="POST" style="display:inline;">
+                                <input type="hidden" name="_method" value="PUT">
+                                <input type="hidden" name="redirect" value="search">
+                                <button type="submit" class="btn btn-warning"> Block </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <form class="delete-form"
+                                messageForConfirm="remove <%= user.username %> from your friend list"
+                                action="/friends/delete/<%= user.id%>" method="POST" style="display:inline;">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="redirect" value="search">
+                                <button type="submit" class="btn btn-danger">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+
+
+                        <% } else if (friendState==='p' ) { %>
+                            You are pending friends!
+
+                            <td>
+                                <form action="/friends/accept/<%= user.id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <input type="hidden" name="redirect" value="search">
+                                    <button type="submit" class="btn btn-primary"> Accept </button>
+                                </form>
+                            </td>
+
+                            <td>
+                                <form action="/friends/block/<%= user.id %>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_method" value="PUT">
+                                    <input type="hidden" name="redirect" value="search">
+                                    <button type="submit" class="btn btn-warning"> Block </button>
+                                </form>
+                            </td>
+
+                            <td>
+                                <form class="delete-form"
+                                    messageForConfirm="remove <%= user.username %> from your friend list"
+                                    action="/friends/delete/<%= user.id%>" method="POST" style="display:inline;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="redirect" value="search">
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+
+
+                            <% } else if (friendState==='b' ) { %>
+                                You are blockeddd friends!
+
+                                <td>
+                                    <form action="/friends/accept/<%= user.id %>" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_method" value="PUT">
+                                        <input type="hidden" name="redirect" value="search">
+                                        <button type="submit" class="btn btn-primary">Unblock</button>
+                                    </form>
+                                </td>
+
+                                <td>
+                                    <form class="delete-form"
+                                        messageForConfirm="remove <%= user.username %> from your friend list"
+                                        action="/friends/delete/<%= user.id%>" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <input type="hidden" name="redirect" value="search">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+
+                                <% } else { %>
+                                    this is strange??
+                                    <% } %>
+
+            </div>
+            <% } %>
