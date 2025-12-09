@@ -14,25 +14,27 @@
 
                     <h1 class="text-center mb-4">Your Profile</h1>
 
-                    <ul class="list-group mb-4">
-                        <li class="list-group-item"><strong>Username:</strong>
-                            <%= user.username %>
-                        </li>
-                        <li class="list-group-item"><strong>First Name:</strong>
-                            <%= user.firstName %>
-                        </li>
-                        <li class="list-group-item"><strong>Last name:</strong>
-                            <%= user.lastName %>
-                        </li>
-                        <li class="list-group-item"><strong>Email:</strong>
-                            <%= user.email %>
-                        </li>
-                        <li class="list-group-item"><strong>User since:</strong>
-                            <%= new Date(user.createdAt).toLocaleDateString("en-US", { weekday: "long" , year: "numeric"
-                                , month: "long" , day: "numeric" }); %>
-                        </li>
+                    <h5>
+                        <ul class="list-group mb-4">
+                            <li class="list-group-item"><strong>Username:</strong>
+                                <%= user.username %>
+                            </li>
+                            <li class="list-group-item"><strong>First Name:</strong>
+                                <%= user.firstName %>
+                            </li>
+                            <li class="list-group-item"><strong>Last name:</strong>
+                                <%= user.lastName %>
+                            </li>
+                            <li class="list-group-item"><strong>Email:</strong>
+                                <%= user.email %>
+                            </li>
+                            <li class="list-group-item"><strong>User since:</strong>
+                                <%= new Date(user.createdAt).toLocaleDateString("en-US", { weekday: "long" ,
+                                    year: "numeric" , month: "long" , day: "numeric" }); %>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </h5>
                     <div class="d-flex flex-column gap-2">
                         <a href="/users/change-email" class="btn btn-secondary w-100">Change Email</a>
                         <a href="/users/change-password" class="btn btn-secondary w-100">Change Password</a>

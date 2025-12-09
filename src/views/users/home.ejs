@@ -3,7 +3,8 @@
 
         <div class="container text-center mt-4">
 
-            <h2>Hello, <%= user.username %></h2>
+            <h2>Hello, <%= user.username %>
+            </h2>
             <p>Welcome to Web Messenger. What would you like to do?</p>
 
             <div class="row mt-4 justify-content-center" style="gap: 20px;">
@@ -20,6 +21,22 @@
                         <h5 class="card-title">Your Profile</h5>
                         <p class="card-text">Update your information or adjust settings.</p>
                         <a href="/users/about" class="btn btn-primary">Go to Profile</a>
+                    </div>
+                </div>
+
+                <div class="card" style="width: 16rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Other</h5>
+                        <p class="card-text">Log out or delete your account.</p>
+                        <form action="/auth/logout" method="POST" class="mt-2">
+                            <button type="submit" class="btn btn-warning w-100">Log Out</button>
+                        </form>
+
+                        <form action="/users" method="POST" class="delete-form mt-2"
+                            messageForConfirm="delete your account (This action cannot be reversed and will permanently delete all your conversations)">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger w-100">Delete Account</button>
+                        </form>
                     </div>
                 </div>
             </div>

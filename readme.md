@@ -1,12 +1,12 @@
 # Messaging Website
 This website allows users to add each other as friends and chat together. 
 
-## Setup and Running Instructions
+## Installation and Setup
 Download the source code files, then download all the dependencies by running `npm i` in the project directory.
 
 After that, run `npm run start` to run the application.
 
-## Database Schema Description
+## Database Schema
 The database is formed of three tables: users, friends, and messages.
 
 #### users
@@ -19,7 +19,7 @@ Columns:
 - last_name : text
 - email : text
 - password : text
-- created_at : data
+- created_at : date
 
 #### friends
 Contains information about which users are friends and since when.
@@ -50,8 +50,20 @@ Columns:
 - [Message Routes](/src/routes/messageRoutes.js): Access all message-related information, find all messages, find conversation between 2 users, add, modify, and delete messages
 
 ## Third-Party libraries and tools used
-- cors (version 2.8.5)
-- dotenv (version 17.2.3)
-- express (version 5.1.0)
-- express-validator (version 7.2.1)
-- pg (version 8.16.3)
+- "bcrypt": "^6.0.0",
+- "cookie-parser": "^1.4.7",
+- "cors": "^2.8.5",
+- "dotenv": "^17.2.3",
+- "ejs": "^3.1.10",
+- "express": "^5.1.0",
+- "express-ejs-layouts": "^2.5.1",
+- "express-validator": "^7.2.1",
+- "jsonwebtoken": "^9.0.3",
+- "method-override": "^3.0.0",
+- "pg": "^8.16.3"
+
+## Frontend operations
+The website uses cookies to ensure users remain logged in after entering their information in the login/signup form.
+Once logged in, they can search for other users and send friend requests.
+Once this request is accepted, the users can chat together and edit messages after they are sent.
+Users can also modify their email address and password, log out and delete their account.
